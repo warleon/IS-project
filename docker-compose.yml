@@ -1,0 +1,10 @@
+version: "3.9"
+services:
+  video:
+    build: videoServer/
+    ports:
+      - "8000:5000"
+  web:
+    build: webServer/
+     ports:
+      - "80:5000"
