@@ -1,7 +1,20 @@
 from nginx:1.21.6
 expose 80
+#get nginx configure command
+run curl 'http://nginx.org/download/nginx-1.21.6.tar.gz'|tar -xzv
+#run tar -xzvf nginx-1.21.6.tar.gz
+run export PATH="wnginx-1.21.6:$PATH"
+#install rtmp plugin
+run curl https://github.com/arut/nginx-rtmp-module/archive/refs/tags/v1.2.2.tar.gz 
+run tar -xvf ${pwd}/v1.2.2.tar.gz
+run configure --with-http_ssl_module --add-module=nginx-rtmp-module-refs-tags-v1.2.2
+run cd nginx-rtmp-module-1.2.2; make
+run cd nginx-rtmp-module-1.2.2; make install
+#install watchexec for development
 copy ./project/nginx.conf /etc/nginx/nginx.conf
-run wget https://github.com/watchexec/watchexec/releases/download/cli-v1.19.0/watchexec-1.19.0-i686-unknown-linux-musl.tar.xz
-run tar -xvf watchexec-1.19.0-i686-unknown-linux-musl.tar.xz
+run curl https://github.com/watchexec/watchexec/releases/download/cli-v1.19.0/watchexec-1.19.0-i686-unknown-linux-musl.tar.xz | tar -xv
+#run tar -xvf watchexec-1.19.0-i686-unknown-linux-musl.tar.xz
 run export PATH="watchexec-1.19.0-i686-unknown-linux-musl:$PATH"
-entrypoint []
+entrypoint ["cd", "/project", ";" ,"watchexec" ,"make"]
+#command "cp /project/nginx.conf /etc/nginx/nginx.conf"
+#command "cd /project ; watchexec make"

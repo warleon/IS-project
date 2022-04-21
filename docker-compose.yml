@@ -6,8 +6,7 @@ services:
       - "8000:80"
     volumes:
       - ./videoServer/project:/project
-    #command:
-      #- cd /project;watchexec make
+      
   web:
     build: ./webServer/
     ports:
