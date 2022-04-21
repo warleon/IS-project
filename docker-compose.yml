@@ -1,10 +1,16 @@
 version: "3.9"
 services:
   video:
-    build: videoServer/
+    build: ./videoServer/
     ports:
-      - "8000:5000"
+      - "8000:80"
+    volumes:
+      - ./videoServer/project:/project
+    #command:
+      #- cd /project;watchexec make
   web:
-    build: webServer/
-     ports:
+    build: ./webServer/
+    ports:
       - "80:5000"
+    volumes:
+      - ./webServer/project:/project
