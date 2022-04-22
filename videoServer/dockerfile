@@ -1,20 +1,31 @@
-from nginx:1.21.6
+from ubuntu:20.04
+env DEBIAN_FRONTEND=noninteractive
+run apt update
+run apt -y upgrade
+#install nginx dependencies
+run apt install -y build-essential libpcre3 libpcre3-dev zlib1g zlib1g-dev libssl-dev libgd-dev libxml2 libxml2-dev uuid-dev
 expose 80
-#get nginx configure command
-run curl 'http://nginx.org/download/nginx-1.21.6.tar.gz'|tar -xzv
-#run tar -xzvf nginx-1.21.6.tar.gz
-run export PATH="wnginx-1.21.6:$PATH"
-#install rtmp plugin
-run curl https://github.com/arut/nginx-rtmp-module/archive/refs/tags/v1.2.2.tar.gz 
-run tar -xvf ${pwd}/v1.2.2.tar.gz
-run configure --with-http_ssl_module --add-module=nginx-rtmp-module-refs-tags-v1.2.2
-run cd nginx-rtmp-module-1.2.2; make
-run cd nginx-rtmp-module-1.2.2; make install
+#get curl
+run apt install -y curl
+#get nginx 
+WORKDIR ~
+run curl -o ~/nginx-1.21.6.tar.gz 'http://nginx.org/download/nginx-1.21.6.tar.gz' 
+run tar -xzvf ~/nginx-1.21.6.tar.gz
+#get rtmp module
+run apt install unzip
+run curl  -o nginx-rtmp-module-1.2.2.zip https://codeload.github.com/arut/nginx-rtmp-module/zip/refs/tags/v1.2.2
+run unzip nginx-rtmp-module-1.2.2.zip 
+#build nginx with the plugin
+WORKDIR nginx-1.21.6/
+#run pwd && ls && sleep 20
+run sh configure --prefix=/var/www/html --sbin-path=/usr/sbin/nginx --conf-path=/etc/nginx/nginx.conf --http-log-path=/var/log/nginx/access.log --error-log-path=/var/log/nginx/error.log --with-pcre  --lock-path=/var/lock/nginx.lock --pid-path=/var/run/nginx.pid --with-http_ssl_module --with-http_image_filter_module=dynamic --modules-path=/etc/nginx/modules --with-http_v2_module --with-stream=dynamic --with-http_addition_module --with-http_mp4_module --add-module=../nginx-rtmp-module-1.2.2
+run make
+run make install
 #install watchexec for development
-copy ./project/nginx.conf /etc/nginx/nginx.conf
-run curl https://github.com/watchexec/watchexec/releases/download/cli-v1.19.0/watchexec-1.19.0-i686-unknown-linux-musl.tar.xz | tar -xv
-#run tar -xvf watchexec-1.19.0-i686-unknown-linux-musl.tar.xz
-run export PATH="watchexec-1.19.0-i686-unknown-linux-musl:$PATH"
-entrypoint ["cd", "/project", ";" ,"watchexec" ,"make"]
+#copy ./project/nginx.conf /etc/nginx/nginx.conf
+#run curl https://github.com/watchexec/watchexec/releases/download/cli-v1.19.0/watchexec-1.19.0-i686-unknown-linux-musl.tar.xz | tar -xv
+##run tar -xvf watchexec-1.19.0-i686-unknown-linux-musl.tar.xz
+#run export PATH="watchexec-1.19.0-i686-unknown-linux-musl:$PATH"
+#entrypoint ["cd", "/project", ";" ,"watchexec" ,"make"]
 #command "cp /project/nginx.conf /etc/nginx/nginx.conf"
 #command "cd /project ; watchexec make"

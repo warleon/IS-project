@@ -1,9 +1,2 @@
 #aun no c q usar para el webserver capaz y si nos kedamos con node v:
-from node:latest
-
-#install watchexec for development
-copy ./project/nginx.conf /etc/nginx/nginx.conf
-run wget https://github.com/watchexec/watchexec/releases/download/cli-v1.19.0/watchexec-1.19.0-i686-unknown-linux-musl.tar.xz
-run tar -xvf watchexec-1.19.0-i686-unknown-linux-musl.tar.xz
-run export PATH="watchexec-1.19.0-i686-unknown-linux-musl:$PATH"
-entrypoint ["cd", "/project", ";" ,"watchexec" ,"make"]
+from python:latest
