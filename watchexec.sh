@@ -1,0 +1,1 @@
+while inotifywait -q -e modify ${1}; do ${2}; done

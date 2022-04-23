@@ -1,2 +1,10 @@
 #aun no c q usar para el webserver capaz y si nos kedamos con node v:
 from python:latest
+
+env DEBIAN_FRONTEND=noninteractive
+#install inotify-tools
+run apt update
+run apt upgrade -y
+run apt install -y inotify-tools
+# watch for changes in the nginx config file
+entrypoint  while inotifywait -q -e modify /project; do (cd /project && make); done
