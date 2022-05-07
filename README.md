@@ -1,6 +1,6 @@
 # IS-project
 
-Diagrama de Clases
+## Diagrama de Clases
 ```plantuml
 @startuml
 	class DatabaseInterface{
@@ -61,7 +61,7 @@ WebService <--> DatabaseInterface
 ```
 ![Class Diagram](docs/CLASS_DIAGRAM.png)
 
-Diagrama de Secuencia: watch video
+## Diagrama de Secuencia: watch video
 ```plantuml
 @startuml
 User -> WebService : ask_for_video_catalog()
@@ -76,7 +76,7 @@ VideoService -> User :stream_video()
 ```
 ![Sequence Diagram](docs/WATCH_VIDEO.png)
 
-Diagrama de Secuencia: register
+## Diagrama de Secuencia: register
 ```plantuml
 @startuml
 User -> WebService : get_register_page()
@@ -92,7 +92,7 @@ WebService -> User : respond_main_page()
 ```
 ![Sequence Diagram](docs/REGISTER.png)
 
-Diagrama de Secuencia: upload video
+## Diagrama de Secuencia: upload video
 ```plantuml
 @startuml
 User -> WebService : get_login_page()
