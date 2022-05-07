@@ -59,7 +59,7 @@ WebService <--> VideoServiceInterface
 WebService <--> DatabaseInterface
 @enduml
 ```
-
+![Class Diagram](docs/CLASS_DIAGRAM.png)
 
 Diagrama de Secuencia: watch video
 ```plantuml
@@ -74,6 +74,8 @@ User -> VideoService : request_video()
 VideoService -> User :stream_video()
 @enduml
 ```
+![Sequence Diagram](docs/WATCH_VIDEO.png)
+
 Diagrama de Secuencia: register
 ```plantuml
 @startuml
@@ -88,6 +90,8 @@ WebService -> WebService : login_user()
 WebService -> User : respond_main_page()
 @enduml
 ```
+![Sequence Diagram](docs/REGISTER.png)
+
 Diagrama de Secuencia: upload video
 ```plantuml
 @startuml
@@ -111,3 +115,5 @@ WebService -> User : respond_succes_upload()
 
 @enduml
 ```
+![Sequence Diagram](docs/UPLOAD_VIDEO.png)
+
