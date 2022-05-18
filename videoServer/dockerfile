@@ -21,9 +21,12 @@ workdir nginx-1.21.6/
 run sh configure --prefix=/var/www/html --sbin-path=/usr/sbin/nginx --conf-path=/etc/nginx/nginx.conf --with-pcre  --with-http_ssl_module --with-http_image_filter_module=dynamic  --with-http_v2_module --with-stream=dynamic --with-http_addition_module --with-http_mp4_module --add-module=../nginx-rtmp-module-1.2.2 --http-log-path=/var/log/nginx/access.log --error-log-path=/var/log/nginx/error.log --lock-path=/var/lock/nginx.lock --pid-path=/var/run/nginx.pid --modules-path=/etc/nginx/modules
 run make
 run make install
-#start nginx
-#run service nginx start
-#install inotify-tools
-run apt install -y inotify-tools
-# watch for changes in the nginx config file
-entrypoint  while inotifywait -q -e modify /project; do (cd /project && make); done
+workdir ~
+# Download nginx startup script
+run curl -o ~/init-deb.sh http://library.linode.com/assets/660-init-deb.sh
+# Move the script to the init.d directory & make executable
+run mv ~/init-deb.sh /etc/init.d/nginx && chmod +x /etc/init.d/nginx
+# Add nginx to the system startup
+run /usr/sbin/update-rc.d -f nginx defaults
+#run service nginx start 
+cmd ["nginx", "-g", "daemon off;"]

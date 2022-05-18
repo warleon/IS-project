@@ -1,4 +1,3 @@
-#aun no c q usar para el webserver capaz y si nos kedamos con node v:
 from python:latest
 
 env DEBIAN_FRONTEND=noninteractive
