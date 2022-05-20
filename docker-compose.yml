@@ -4,7 +4,7 @@ services:
     build: ./videoServer/
     ports:
       - "8000:80"
-      - "1935:1395"
+      - "1935:1935"
     volumes:
       - ./videoServer/project:/project
       - /mnt/c/Users/Usurio/Videos/testAsesoria:/videos
