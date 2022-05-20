@@ -10,4 +10,4 @@ run apt upgrade -y
 copy ./project /project
 workdir /project
 run pip install -r requirements.txt
-cmd ["python","/project/Webserver/manage.py","runserver"]
+cmd ["python","/project/Webserver/manage.py","runserver","0.0.0.0:8000"]
