@@ -29,5 +29,5 @@ run mv ~/init-deb.sh /etc/init.d/nginx && chmod +x /etc/init.d/nginx
 # Add nginx to the system startup
 run /usr/sbin/update-rc.d -f nginx defaults
 #run service nginx start 
-cmd ["cp", "/project/nginx.conf", "/etc/nginx/nginx.conf"]
+copy ./project/nginx.conf /etc/nginx/nginx.conf
 cmd [ "nginx", "-g", "daemon off;"]
