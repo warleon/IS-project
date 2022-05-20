@@ -1,9 +1,12 @@
-from python:latest
+from python:3.8
 
 env DEBIAN_FRONTEND=noninteractive
 #install inotify-tools
 run apt update
 run apt upgrade -y
-run apt install -y inotify-tools
+#run apt install -y inotify-tools
+
 # watch for changes in the nginx config file
-entrypoint  while inotifywait -q -e modify /project; do (cd /project && make); done
+copy ./project/requirements.txt  ~/requirements.txt
+run pip install -r ~/requirements.txt
+cmd ["python","/project/Webserver/manage.py","runserver"]

@@ -1,17 +1,17 @@
-version: "3.9"
+version: "3.3"
 services:
   video:
     build: ./videoServer/
     ports:
       - "8000:80"
-      - "1935:1395"
+      - "1935:1935"
     volumes:
       - ./videoServer/project:/project
-      - /mnt/c/Users/Usurio/Videos/testAsesoria:/videos
+      - /home/edublo/Documents/HUSTLE/Sketchy Part1/Sketchy:/videos
       
   web:
     build: ./webServer/
     ports:
-      - "80:5000"
+      - "80:8000"
     volumes:
       - ./webServer/project:/project
