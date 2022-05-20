@@ -7,7 +7,7 @@ services:
       - "1935:1935"
     volumes:
       - ./videoServer/project:/project
-      - /mnt/c/Users/Usurio/Videos/testAsesoria:/videos
+      - ~/videos:/videos
       
   web:
     build: ./webServer/
