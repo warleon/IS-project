@@ -1,0 +1,22 @@
+```plantuml
+@startuml
+User -> WebService : get_login_page()
+WebService -> User : respond_login_page()
+User -> WebService : post_data()
+WebService -> Database : validate_data()
+Database -> WebService : retrieve_user_id()
+WebService -> User : on_failure_show_message_failure()
+WebService -> WebService :  on succes login_user()
+WebService -> User : respond_main_page()
+
+User -> WebService : get_upload_video_page()
+WebService -> User : respond_upload_page()
+User -> WebService : post_video_and_data()
+WebService -> VideoService : upload_video()
+VideoService -> WebService : respond_source()
+WebService -> Database : store_video_data()
+Database -> WebService : retrieve_video_id()
+WebService -> User : respond_succes_upload()
+
+@enduml
+```
