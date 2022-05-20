@@ -7,7 +7,7 @@ services:
       - "1935:1935"
     volumes:
       - ./videoServer/project:/project
-      - /home/edublo/Documents/HUSTLE/Sketchy Part1/Sketchy:/videos
+      - /mnt/c/Users/Usurio/Videos/testAsesoria:/videos
       
   web:
     build: ./webServer/

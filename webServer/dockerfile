@@ -7,6 +7,7 @@ run apt upgrade -y
 #run apt install -y inotify-tools
 
 # watch for changes in the nginx config file
-copy ./project/requirements.txt  ~/requirements.txt
-run pip install -r ~/requirements.txt
+copy ./project /project
+workdir /project
+run pip install -r requirements.txt
 cmd ["python","/project/Webserver/manage.py","runserver"]
