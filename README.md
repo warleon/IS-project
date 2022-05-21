@@ -13,4 +13,4 @@
 ![Sequence Diagram](docs/UPLOAD_VIDEO.png)
 
 ## Diagrama de Arquitectura
-![Sequence Diagram](docs/ACHITECTURE_DIAGRAM.png)
+![Architecture Diagram](docs/ACHITECTURE_DIAGRAM.png)

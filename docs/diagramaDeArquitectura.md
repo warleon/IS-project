@@ -28,5 +28,6 @@ user <--> Nginx
 frontend <-> backend
 backend <-> psql
 Nginx -> filesystem
+backend <-> Nginx
 @enduml
 ```
