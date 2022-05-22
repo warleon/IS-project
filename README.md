@@ -1,7 +1,7 @@
-# IS-project
+# IS project
 
-## Diagrama de Clases
-![Class Diagram](docs/CLASS_DIAGRAM.png)
+## Class Diagram
+![Class Diagram](docs/class_diagram.png)
 
 ## Diagrama de Secuencia: watch video
 ![Sequence Diagram](docs/WATCH_VIDEO.png)

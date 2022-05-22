@@ -1,0 +1,80 @@
+```plantuml
+@startuml
+skin rose
+skinparam dpi 300
+class "Database Interface" as DI {
+  + response_catalog_for_user()
+  + retrieve_user_id()
+  + retrieve_video_id()
+}
+
+class "Video Service Interface" as VSI {
+  + stream_video()
+  + respond_source()
+}
+
+class "User" as U {
+  - id
+  - username
+  - password
+  - email
+  --
+  + getId()
+  + getUsername()
+  + getPassword()
+  + getEmail()
+  + setUsername()
+  + setPassword()
+  + setEmail()
+}
+
+class "Video" as V {
+  - id
+  - string[] sources
+  --
+  + addSource(string source)
+  + getSources()
+  + getId()
+}
+
+Package "Web Service" #DDDDDD {
+	class "Web Service" as WS {
+		+ on_failure_show_message_failure()
+		+ respond_catalog()
+		+ respond_main_page()
+		+ respond_video_player()
+	}
+
+  class "Login Service" as LS {
+		+ login_user()
+		+ respond_login_page()
+		+ respond_register_page()
+		+ validate_data()
+  }
+
+  class "Upload Service" as UPS {
+		+ respond_succes_upload()
+		+ respond_upload_page()
+    + split_video()
+		+ store_video_data()
+		+ upload_video()
+  }
+
+  class "User Service" as US {
+		+ query_catalog_for_user()
+		+ store_user_data()
+  }
+}
+
+U <-- US
+V <-- UPS
+U <-- LS
+
+LS <-- WS
+UPS <-- WS
+US <-- WS
+
+WS --> VSI
+WS --> DI
+@enduml
+```

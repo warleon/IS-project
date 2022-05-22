@@ -1,5 +1,7 @@
 ```plantuml
 @startuml
+skin rose
+skinparam dpi 300
 User -> WebService : ask_for_video_catalog()
 WebService -> Database : query_catalog_for_user()
 Database -> WebService : response_catalog_for_user()

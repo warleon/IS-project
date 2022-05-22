@@ -1,12 +1,14 @@
 ```plantuml
 @startuml
+skin rose
+skinparam dpi 300
 User -> WebService : get_login_page()
 WebService -> User : respond_login_page()
 User -> WebService : post_data()
 WebService -> Database : validate_data()
 Database -> WebService : retrieve_user_id()
-WebService -> User : on_failure_show_message_failure()
-WebService -> WebService :  on succes login_user()
+WebService -> User : **on FAILURE** show_message_failure()
+WebService -> WebService :  **on SUCCESS** login_user()
 WebService -> User : respond_main_page()
 
 User -> WebService : get_upload_video_page()

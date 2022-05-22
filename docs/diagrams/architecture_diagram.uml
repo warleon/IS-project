@@ -1,0 +1,71 @@
+```plantuml
+@startuml
+skinparam dpi 300
+left to right direction
+actor User as U
+
+package Arquitecture {
+  component LB [
+    Load
+    Balancer
+  ]
+  component API [
+    **API**
+  ]
+  component UPVP [
+    Upload Video
+    Producer
+  ]
+  component WVS [
+    Watch Video
+    Service
+  ]
+  component SVS [
+    Split Video
+    Service
+  ]
+  component SS [
+    Security
+    Service
+  ]
+  component UPVC [
+    Upload Video
+    Consumer 
+  ]
+  component GVDS [
+    Get Video Dependencies
+    Service 
+  ]
+  component SVDS [
+    Show Video Dependencies
+    Service 
+  ]
+  queue "**BMQ**" as BMQ
+  database "**NoSQL DB**" as NDB
+  database "**SQL DB**" as DB
+  queue "**cache**" as C
+}
+
+U --> LB
+LB --> API
+
+API --> UPVP
+UPVP --> BMQ
+BMQ <-- UPVC
+UPVC --> NDB
+
+API --> WVS
+WVS --> SVS
+SVS --> NDB
+
+API --> SS
+SS --> DB
+
+API --> SVDS
+GVDS <-- NDB
+C <-- GVDS
+SVDS <-- GVDS
+SVDS <-- C
+
+@enduml
+```
