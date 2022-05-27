@@ -31,6 +31,7 @@ services:
       - POSTGRES_DB=mydb
     command: >
         bash -c " pip install -r /project/requirements.txt
+        && python /project/Webserver/manage.py makemigrations
         && python /project/Webserver/manage.py migrate
         && python  /project/Webserver/manage.py runserver 0.0.0.0:8000"
     depends_on:
