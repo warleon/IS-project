@@ -17,4 +17,5 @@ class Vote(models.Model):
 	id = models.BigAutoField(primary_key=True)
 	user = models.ForeignKey(User,on_delete=models.CASCADE)
 	video = models.ForeignKey(Video,on_delete=models.CASCADE)
+	positive = models.BooleanField(default=True)
 	
