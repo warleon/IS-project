@@ -5,7 +5,7 @@ services:
     ports:
       - "5432:5432"
     volumes:
-      - "~/db:/var/lib/postgresql/data"
+      - "./volumes/db:/var/lib/postgresql/data"
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=mysecretpassword
@@ -17,7 +17,7 @@ services:
       - "1935:1935"
     volumes:
       - ./videoServer/project:/project
-      - ~/videos:/videos
+      - ./volumes/videos:/videos
       
   web:
     build: ./webServer/

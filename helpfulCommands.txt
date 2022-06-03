@@ -1,0 +1,2 @@
+use when docker fails to build because of wrong metadata:
+rm  ~/.docker/config.json 

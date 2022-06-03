@@ -106,3 +106,6 @@ dist
 
 #pycache
 __pycache__
+#docker
+#volumes/db/*
+#volumes/videos/*
