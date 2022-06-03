@@ -106,3 +106,5 @@ dist
 
 #pycache
 __pycache__
+#docker
+volumes/
