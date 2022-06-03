@@ -1,15 +1,17 @@
 version: "3.3"
 services:
-  database:
+  db:
     image: postgres:14.3
     ports:
       - "5432:5432"
     volumes:
-      - "./volumes/db:/var/lib/postgresql/data"
+      - "~/db:/var/lib/postgresql/data"
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=mysecretpassword
       - POSTGRES_DB=mydb
+    networks:
+      - my-net
 
   video:
     build: ./videoServer/
@@ -17,12 +19,16 @@ services:
       - "1935:1935"
     volumes:
       - ./videoServer/project:/project
-      - ./volumes/videos:/videos
+      - ~/videos:/videos
+    networks:
+      - my-net
       
   web:
     build: ./webServer/
     ports:
       - "80:8000"
+    depends_on:
+      - db
     volumes:
       - ./webServer/project:/project
     environment:
@@ -34,7 +40,9 @@ services:
         && python /project/Webserver/manage.py makemigrations
         && python /project/Webserver/manage.py migrate
         && python  /project/Webserver/manage.py runserver 0.0.0.0:8000"
-    depends_on:
-      - database
+    networks:
+      - my-net
   
+networks:
+  my-net:
       
