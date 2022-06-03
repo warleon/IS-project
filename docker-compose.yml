@@ -1,5 +1,16 @@
 version: "3.3"
 services:
+  database:
+    image: postgres:14.3
+    ports:
+      - "5432:5432"
+    volumes:
+      - "~/db:/var/lib/postgresql/data"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=mysecretpassword
+      - POSTGRES_DB=mydb
+
   video:
     build: ./videoServer/
     ports:
@@ -14,3 +25,16 @@ services:
       - "80:8000"
     volumes:
       - ./webServer/project:/project
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=mysecretpassword
+      - POSTGRES_DB=mydb
+    command: >
+        bash -c " pip install -r /project/requirements.txt
+        && python /project/Webserver/manage.py makemigrations
+        && python /project/Webserver/manage.py migrate
+        && python  /project/Webserver/manage.py runserver 0.0.0.0:8000"
+    depends_on:
+      - database
+  
+      

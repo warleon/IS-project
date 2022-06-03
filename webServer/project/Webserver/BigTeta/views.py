@@ -5,7 +5,10 @@ def index(request):
 
 
 def login(request):
-    return render(request,'login.html')
+    template = loader.get_template('login.html')
+    return HttpResponse(template.render({},request))
+    #return render(request,'login.html')
 
 def register(request):
-    return render(request,'register.html')
+    template = loader.get_template('register.html')
+    return HttpResponse(template.render({},request))
