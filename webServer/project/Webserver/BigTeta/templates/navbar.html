@@ -19,7 +19,11 @@
     <ul class="navbar-nav ml-auto">
 
       {# Will know if user is logged in or not#}
+      <li class="nav-item active">
+        <a class="nav-link" href="showFiles">View Videos</a>
+      </li> 
       {% if user.is_authenticated %}
+      
       <li class="nav-item active">
         <a class="nav-link" href="showFiles">Upload Files</a>
       </li> 
@@ -32,7 +36,6 @@
 
 
       {% else %}
-
       <li class="nav-item active">
         <a class="nav-link" href="login">Login</a>
       </li>
