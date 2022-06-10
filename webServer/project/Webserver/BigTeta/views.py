@@ -72,9 +72,10 @@ def show_video(request):
 def showFiles(request):
     # Handle file upload
     if request.method == 'POST':
+        title = request.POST['title']
         form = DocumentForm(request.POST, request.FILES)
         if form.is_valid():
-            newdoc = Video(docfile = request.FILES['docfile'])
+            newdoc = Video(title=title,docfile = request.FILES['docfile'])
             newdoc.save()
             #run split command and save results
             doc_rel_path = newdoc.docfile.name

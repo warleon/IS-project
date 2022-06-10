@@ -1,33 +1,11 @@
-<head>
-	<style type="text/css">
+{% extends 'base.html' %}
 
-	</style>
-	<script type="text/javascript">
+{% block content %}
 
-	</script>
-</head>
-
-
-<!-- List of uploaded documents -->
-<body>
-{% include 'navbar.html' %}
-  <main>
-      {% block content%}
-      {% endblock %}
-  </main>
-
-  <!-- Bootstrap core JS-->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js%22%3E"></script>
-  <!-- Core theme JS-->
-  <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
-  <!-- *                               SB Forms JS                               * -->
-  <!-- * Activate your form at https://startbootstrap.com/solution/contact-forms * -->
-  <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *-->
-  <script src="https://cdn.startbootstrap.com/sb-forms-latest.js%22%3E"></script>
 {% if documents %}
 		<ul>
 		{% for document in documents %}
-				<li><a href="/show?id={{ document.id }}">Hyperlink{{ document.docfile.name }}</a></li>
+				<li><a href="/show?id={{ document.id }}">{{ document.title }}</a></li>
 		{% endfor %}
 		</ul>
 {% else %}
@@ -43,6 +21,12 @@
 						{{ form.docfile.errors }}
 						{{ form.docfile }}
 				</p>
+				<div class="form-group">
+
+					<input type="text" class="form-control" placeholder="Ingresa el titulo" name = "title">
+			
+				</div>
 				<p><input type="submit" value="Upload" /></p>
 		</form>
-</body>
+
+{% endblock %}
