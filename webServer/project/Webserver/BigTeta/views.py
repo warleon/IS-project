@@ -80,7 +80,7 @@ def showFiles(request):
             doc_rel_path = newdoc.docfile.name
             doc_name = os.path.basename(doc_rel_path)
             doc_abs_path =os.path.join(settings.MEDIA_ROOT , doc_rel_path)
-            command = "ffmpeg -i {0} -f segment -segment_time 5 -segment_list {0}.m3u8 -vcodec copy -reset_timestamps 1 {0}_%d.ts".format(doc_abs_path)
+            command = "ffmpeg -i {0} -f segment -segment_time 5.0 -segment_list {0}.m3u8 -vcodec copy {0}_%d.ts".format(doc_abs_path)
             print("executing: ",command)
             subprocess.run(command,shell=True, check=True)
             newdoc.docfile.name = doc_rel_path+".m3u8"
