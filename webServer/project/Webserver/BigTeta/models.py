@@ -12,6 +12,7 @@ class Video(models.Model):
 	title = models.CharField(max_length=100,blank=False)
 	filename = models.CharField(max_length=100,blank=False)
 	urlAuxiliar = models.CharField(max_length=256,blank=False)
+	docfile = models.FileField(upload_to='documents/%Y/%m/%d',default="newvid")
 
 class Vote(models.Model):
 	id = models.BigAutoField(primary_key=True)

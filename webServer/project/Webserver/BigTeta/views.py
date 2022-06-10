@@ -1,8 +1,15 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages 
 from django.contrib.auth.models import User, auth
+from django.conf import settings 
+import os
 
 from django.contrib.auth import logout
+
+import subprocess
+
+from BigTeta.models import Video
+from BigTeta.forms import DocumentForm
 
 def index(request):
     return render(request,'index.html')
@@ -52,3 +59,33 @@ def logout_user(request):
     logout(request)
     messages.success(request,('Youre now logged out'))
     return redirect('BigTeta:home')
+
+def show_video(request):
+    return render(request, 'showVideo.html')
+
+
+def showFiles(request):
+    # Handle file upload
+    if request.method == 'POST':
+        form = DocumentForm(request.POST, request.FILES)
+        if form.is_valid():
+            newdoc = Video(docfile = request.FILES['docfile'])
+            newdoc.save()
+            #run split command and save results
+            doc_rel_path = newdoc.docfile.name
+            doc_name = os.path.basename(doc_rel_path)
+            doc_abs_path =os.path.join(settings.MEDIA_ROOT , doc_rel_path)
+            command = "ffmpeg -i {0} -f segment -segment_time 5 -segment_list {0}.m3u8 -vcodec copy -reset_timestamps 1 {0}_%d.ts".format(doc_abs_path)
+            print("executing: ",command)
+            subprocess.run(command,shell=True, check=True)
+            indexFile.docfile.name = doc_rel_path+".m3u8"
+            indexFile.save()
+            # Redirect to the document showFiles after POST
+            return redirect('BigTeta:showFiles')
+    else:
+        form = DocumentForm() # A empty, unbound form
+
+    # Load documents for the showFiles page
+    documents = Video.objects.all()
+    # Render showFiles page with the documents and the form
+    return render(request,'showFiles.html',{'documents': documents, 'form': form})

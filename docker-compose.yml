@@ -12,16 +12,6 @@ services:
       - POSTGRES_DB=mydb
     networks:
       - my-net
-
-  video:
-    build: ./videoServer/
-    ports:
-      - "1935:1935"
-    volumes:
-      - ./videoServer/project:/project
-      - ~/videos:/videos
-    networks:
-      - my-net
       
   web:
     build: ./webServer/
