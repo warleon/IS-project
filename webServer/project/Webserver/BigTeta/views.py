@@ -18,7 +18,7 @@ def index(request):
 def login(request):
     if request.method == 'POST':
         username = request.POST['username']
-        password = request.POST['password']
+        password = request.POST['password1']
 
         user = auth.authenticate(request, username=username, password=password)
         # user = User.objects.filter(username=username)
