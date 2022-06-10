@@ -65,6 +65,7 @@ def show_video(request):
     vidid = request.GET.get('id')
     video = Video.objects.get(pk=vidid)
     return render(request, 'showVideo.html',{"url":settings.MEDIA_URL+video.docfile.name})
+    #return render(request, 'showVideo.html',{"video":video,"MEDIA_URL":settings.MEDIA_URL})
 
 
 
