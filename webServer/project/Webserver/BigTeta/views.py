@@ -79,8 +79,6 @@ def showFiles(request):
             newdoc.save()
             #run split command and save results
             doc_rel_path = newdoc.docfile.name
-            img_output_path = 'images'
-            subprocess.call(['ffmpeg', '-i', doc_rel_path, '-ss', '00:00:02.000', '-vframes', '1', img_output_path])
             doc_name = os.path.basename(doc_rel_path)
             doc_abs_path =os.path.join(settings.MEDIA_ROOT , doc_rel_path)
             command = "ffmpeg -i {0} -f segment -segment_time 5.0 -segment_list {0}.m3u8 -vcodec copy {0}_%d.ts".format(doc_abs_path)
