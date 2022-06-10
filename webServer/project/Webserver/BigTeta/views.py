@@ -1,3 +1,4 @@
+from email import message
 from django.shortcuts import render, redirect
 from django.contrib import messages 
 from django.contrib.auth.models import User, auth
@@ -8,8 +9,8 @@ from django.contrib.auth import logout
 
 import subprocess
 
-from BigTeta.models import Video
-from BigTeta.forms import DocumentForm
+from .models import Video
+from .forms import DocumentForm
 
 def index(request):
     return render(request,'index.html')
@@ -61,7 +62,10 @@ def logout_user(request):
     return redirect('BigTeta:home')
 
 def show_video(request):
-    return render(request, 'showVideo.html')
+    vidid = request.GET.get('id')
+    video = Video.objects.get(pk=vidid)
+    return render(request, 'showVideo.html',{"url":settings.MEDIA_URL+video.docfile.name})
+
 
 
 def showFiles(request):
@@ -78,8 +82,8 @@ def showFiles(request):
             command = "ffmpeg -i {0} -f segment -segment_time 5 -segment_list {0}.m3u8 -vcodec copy -reset_timestamps 1 {0}_%d.ts".format(doc_abs_path)
             print("executing: ",command)
             subprocess.run(command,shell=True, check=True)
-            indexFile.docfile.name = doc_rel_path+".m3u8"
-            indexFile.save()
+            newdoc.docfile.name = doc_rel_path+".m3u8"
+            newdoc.save()
             # Redirect to the document showFiles after POST
             return redirect('BigTeta:showFiles')
     else:
