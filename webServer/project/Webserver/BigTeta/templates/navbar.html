@@ -20,10 +20,13 @@
 
       {# Will know if user is logged in or not#}
       {% if user.is_authenticated %}
-
+      <li class="nav-item active">
+        <a class="nav-link" href="showFiles">Upload Files</a>
+      </li> 
       <li class="nav-item active">
         <a class="nav-link" href="logout">Logout</a>
       </li> 
+
 
 
 
