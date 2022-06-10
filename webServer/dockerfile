@@ -4,9 +4,5 @@ env DEBIAN_FRONTEND=noninteractive
 #install inotify-tools
 run apt update
 run apt upgrade -y
-#run apt install -y inotify-tools
 
-# watch for changes in the nginx config file
-#copy ./project /project
-#workdir /project
-#run pip install -r requirements.txt
+run apt install ffmpeg -y
