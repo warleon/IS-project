@@ -1,23 +1,44 @@
-<!-- List of uploaded documents -->
+{% extends 'base.html' %}
+
+{% block content %}
+<head>
+	<h1>Videos:<br>
+		
+	</h1>
+</head>
+<section>
 {% if documents %}
+
 		<ul>
 		{% for document in documents %}
-				<li><a href="{{ document.docfile.url }}">{{ document.docfile.name }}</a></li>
+		<div class="row">
+			<!--Grid column-->
+			<div class="col-md-9 mb-4">
+				<div class="row">
+					<div class="col-md-4 mb-4">
+						<header>
+							<h2>
+							<li><a href="/show?id={{ document.id }}">{{ document.title }}</a></li><br>
+							</h2>
+						</header>
+					  <div class="bg-image hover-overlay shadow-1-strong rounded ripple" data-mdb-ripple-color="light">
+						<img src="https://mdbootstrap.com/img/new/standard/nature/184.jpg" class="img-fluid" />
+						
+						  <div class="mask" style="background-color: rgba(251, 251, 251, 0.15);"></div>
+						</a>
+					  </div>
+					</div>
+	
+				  </div>
+			</div>
+		</div>
 		{% endfor %}
 		</ul>
 {% else %}
-		<p>No documents.</p>
+		<p>No videos to show :(</p>
+
+	
 {% endif %}
 
-		<!-- Upload form. Note enctype attribute! -->
-		<form  action="showFiles" method="post" enctype="multipart/form-data">
-				{% csrf_token %}
-				<p>{{ form.non_field_errors }}</p>
-				<p>{{ form.docfile.label_tag }} {{ form.docfile.help_text }}</p>
-				<p>
-						{{ form.docfile.errors }}
-						{{ form.docfile }}
-				</p>
-				<p><input type="submit" value="Upload" /></p>
-		</form>
-</body>
+</section>
+{% endblock %}
