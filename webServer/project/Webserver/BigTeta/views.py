@@ -69,7 +69,7 @@ def show_video(request):
 
 
 
-def showFiles(request):
+def upload(request):
     # Handle file upload
     if request.method == 'POST':
         title = request.POST['title']
@@ -94,4 +94,10 @@ def showFiles(request):
     # Load documents for the showFiles page
     documents = Video.objects.all()
     # Render showFiles page with the documents and the form
-    return render(request,'showFiles.html',{'documents': documents, 'form': form})
+    return render(request,'upload.html',{'documents': documents, 'form': form})
+
+
+def showFiles(request):
+    documents = Video.objects.all()
+    # Render showFiles page with the documents and the form
+    return render(request,'showFiles.html',{'documents': documents})

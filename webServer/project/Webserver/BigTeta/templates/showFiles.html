@@ -28,17 +28,7 @@
 						</a>
 					  </div>
 					</div>
-	  
-					<div class="col-md-8 mb-4">
-					  <p>
-						Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatibus ratione
-						necessitatibus itaque error alias repellendus nemo reiciendis aperiam quisquam
-						minus ipsam reprehenderit commodi ducimus, in dicta aliquam eveniet dignissimos
-						magni.
-					  </p>
-	  
-					  <button type="button" class="btn btn-primary">Read</button>
-					</div>
+	
 				  </div>
 			</div>
 		</div>
@@ -51,25 +41,4 @@
 {% endif %}
 
 </section>
-		<!-- Upload form. Note enctype attribute! -->
-
-		{% if user.is_authenticated %}
-		<form  action="showFiles" method="post" enctype="multipart/form-data">
-				{% csrf_token %}
-				<p>{{ form.non_field_errors }}</p>
-				<p>{{ form.docfile.label_tag }} {{ form.docfile.help_text }}</p>
-				<p>
-						{{ form.docfile.errors }}
-						{{ form.docfile }}
-				</p>
-				<div class="form-group">
-
-					<input type="text" class="form-control" placeholder="Ingresa el titulo" name = "title">
-					<input type="text" class="form-control" placeholder="Descripcion, no mas de 100 palabras" name = "descripcion">
-			
-				</div>
-				<p><input type="submit" value="Upload" /></p>
-		</form>
-		{% endif %}
-
 {% endblock %}
