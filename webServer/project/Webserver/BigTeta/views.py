@@ -67,8 +67,6 @@ def show_video(request):
     return render(request, 'showVideo.html',{"url":settings.MEDIA_URL+video.docfile.name})
     #return render(request, 'showVideo.html',{"video":video,"MEDIA_URL":settings.MEDIA_URL})
 
-
-
 def upload(request):
     # Handle file upload
     if request.user.is_authenticated:
@@ -98,8 +96,6 @@ def upload(request):
         return render(request,'upload.html',{'documents': documents, 'form': form})
 
     return redirect('BigTeta:home')
-
-
 
 def showFiles(request):
     documents = Video.objects.all()
