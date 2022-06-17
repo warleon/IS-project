@@ -7,6 +7,7 @@ import os
 
 from django.contrib.auth import logout
 from django.http import JsonResponse
+from django.db.utils import IntegrityError
 
 
 import subprocess
@@ -17,7 +18,7 @@ import logging
 
 logging.basicConfig(level=logging.WARNING)
 logger = logging.getLogger(__name__)
-logger.setLevel(logging.DEBUG)
+logger.setLevel(logging.INFO)
 
 def index(request):
     return render(request,'index.html')
@@ -87,9 +88,9 @@ def upload(request):
     if request.user.is_authenticated:
         if request.method == 'POST':
             title = request.POST['title']
-            dependencies = request.POST.getlist("dependency")
             form = DocumentForm(request.POST, request.FILES)
             if form.is_valid():
+                dependencies = request.POST.getlist("dependency")
                 newdoc = Video(title=title,docfile = request.FILES['docfile'])
                 newdoc.save()
                 #run split command and save results
@@ -104,7 +105,9 @@ def upload(request):
                 # Create dependencies
                 for dependency in dependencies:
                     try:
-                        video_2 = Video.objects.get(pk=int(dependency))
+                        id = int(dependency)
+                        logger.info("Found dependency id: %s", id)
+                        video_2 = Video.objects.get(pk=id)
                         relation = Related(video_01 = newdoc, video_02 = video_2)
                         relation.save()
                     except ValueError as e:

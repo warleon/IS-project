@@ -24,24 +24,12 @@ function configElement(elem) {
 }
 
 function changeToInput(elem) {
-	// if (elem.prop("tagName") == "INPUT") return;
-	// console.log(elem); console.log("Input");
-	// console.log(elem.text());
-	let input = $("<input  type='hidden'></input>");
+	if (elem.children().length) return
+	let input = $("<input  type='hidden' name='dependency'></input>");
 	input.val(elem.attr("data-id"));
-	// input.attr("data-id", elem.attr("data-id"));
-	// input.attr("name", "dependency");
-	// configElement(input);
 	elem.append(input);
 }
 function changeToDiv(elem) {
-	// if (elem.prop("tagName") == "DIV") return;
-	// console.log(elem); console.log("Div");
-	// let div = $("<div class='drag' draggable='true'></div>");
-	// div.text(elem.val());
-	// div.attr("data-id", elem.attr("data-id"));
-	// configElement(div);
-	// elem.replaceWith(div);
 	elem.children().remove();
 }
 
