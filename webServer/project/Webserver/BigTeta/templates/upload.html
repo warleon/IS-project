@@ -1,9 +1,10 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<style>
-    
-</style>
+{% load static %}
+
+<link rel="stylesheet" href="{% static '/css/upload.css' %}">
+
 <section>
 		<form  action="upload" method="post" enctype="multipart/form-data">
 				{% csrf_token %}
@@ -18,18 +19,34 @@
 						{{ form.title.errors }}
 						{{ form.title }}
 		    </p>
-        <ul>
-          {% for document in documents %}
-            <div class="row">
-              <input id="btnName" class="btn my-1" type="checkbox" value = "{{ document.id }}" name = "dependency"> {{ document.title }} </input>
-            </div>
-          {% endfor %}
-        </ul>
-        <ul class="justList">
-        </ul>
-				<p><input type="submit" value="Upload" /></p>
+				<p>Select Dependencies</p>
+				<table>
+					<thead>
+						<tr>
+							<th>Selected</th>
+							<th>Search:
+								<input id="searchInput" type="search">
+								<input id="searchBtn" type="button" value="Search">
+							</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>
+								<div id="selectCont" class="content"></div>
+							</td>
+							<td>
+								<div id="searchCont" class="content"></div>
+							</td>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+				<p><input class="large-btn" type="submit" value="Upload" /></p>
 		</form>
 </section>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script type="text/javascript" src="{% static '/js/script.js'  %}"></script>
 <script>
   function video_add(btn_text) {
     var text = btn_text; // the ingredient

@@ -6,6 +6,8 @@ from django.conf import settings
 import os
 
 from django.contrib.auth import logout
+from django.http import JsonResponse
+
 
 import subprocess
 
@@ -65,6 +67,14 @@ def logout_user(request):
     logout(request)
     messages.success(request,('Youre now logged out'))
     return redirect('BigTeta:home')
+
+def get_video_by_title(request):
+    segment = request.GET.get('title')
+    if(len(segment)):
+        videos = Video.objects.filter(title__icontains=segment)
+        return JsonResponse(list(videos.values()), safe=False)
+    else:
+        return JsonResponse([], safe=False)
 
 def show_video(request):
     vidid = request.GET.get('id')
