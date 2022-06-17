@@ -5,7 +5,6 @@
     
 </style>
 <section>
-
 		<form  action="upload" method="post" enctype="multipart/form-data">
 				{% csrf_token %}
 				<p>{{ form.non_field_errors }}</p>
@@ -14,13 +13,28 @@
 						{{ form.docfile.errors }}
 						{{ form.docfile }}
 				</p>
-				<div class="form-group">
-
-					<input type="text" class="form-control" placeholder="Ingresa el titulo" name = "title">
-					<input type="text" class="form-control" placeholder="Descripcion, no mas de 100 palabras" name = "descripcion">
-			
-				</div>
+				<p>{{ form.title.label_tag }}</p>
+        <p>
+						{{ form.title.errors }}
+						{{ form.title }}
+		    </p>
+        <ul>
+          {% for document in documents %}
+            <div class="row">
+              <input id="btnName" class="btn my-1" type="checkbox" value = "{{ document.id }}" name = "dependency"> {{ document.title }} </input>
+            </div>
+          {% endfor %}
+        </ul>
+        <ul class="justList">
+        </ul>
 				<p><input type="submit" value="Upload" /></p>
 		</form>
 </section>
+<script>
+  function video_add(btn_text) {
+    var text = btn_text; // the ingredient
+
+    console.log(text)
+  }
+</script>
 {% endblock %}

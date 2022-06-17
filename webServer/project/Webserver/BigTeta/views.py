@@ -9,8 +9,13 @@ from django.contrib.auth import logout
 
 import subprocess
 
-from .models import Video
+from .models import Video, Related
 from .forms import DocumentForm
+import logging
+
+logging.basicConfig(level=logging.WARNING)
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.DEBUG)
 
 def index(request):
     return render(request,'index.html')
@@ -72,6 +77,7 @@ def upload(request):
     if request.user.is_authenticated:
         if request.method == 'POST':
             title = request.POST['title']
+            dependencies = request.POST.getlist("dependency")
             form = DocumentForm(request.POST, request.FILES)
             if form.is_valid():
                 newdoc = Video(title=title,docfile = request.FILES['docfile'])
@@ -81,10 +87,16 @@ def upload(request):
                 doc_name = os.path.basename(doc_rel_path)
                 doc_abs_path =os.path.join(settings.MEDIA_ROOT , doc_rel_path)
                 command = "ffmpeg -i {0} -f segment -segment_time 5.0 -segment_list {0}.m3u8 -vcodec copy {0}_%d.ts".format(doc_abs_path)
-                print("executing: ",command)
                 subprocess.run(command,shell=True, check=True)
                 newdoc.docfile.name = doc_rel_path+".m3u8"
                 newdoc.save()
+
+                # Create dependencies
+                for dependency in dependencies:
+                    video_2 = Video.objects.get(pk=int(dependency))
+                    relation = Related(video_01 = newdoc, video_02 = video_2)
+                    relation.save()
+
                 # Redirect to the document showFiles after POST
                 return redirect('BigTeta:showFiles')
         else:
@@ -93,7 +105,7 @@ def upload(request):
         # Load documents for the showFiles page
         documents = Video.objects.all()
         # Render showFiles page with the documents and the form
-        return render(request,'upload.html',{'documents': documents, 'form': form})
+        return render(request,'upload.html', {'documents': documents, 'form': form})
 
     return redirect('BigTeta:home')
 
