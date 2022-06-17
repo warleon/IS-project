@@ -24,29 +24,29 @@ function configElement(elem) {
 }
 
 function changeToInput(elem) {
-	if (elem.prop("tagName") == "INPUT") return;
-	console.log(elem); console.log("Input");
-	console.log(elem.text());
-	let input = $("<input readonly type='text' class='drag' draggable='true'></input>");
-	input.val(elem.text());
-	input.attr("data-id", elem.attr("data-id"));
-	configElement(input);
-	elem.replaceWith(input);
+	// if (elem.prop("tagName") == "INPUT") return;
+	// console.log(elem); console.log("Input");
+	// console.log(elem.text());
+	let input = $("<input  type='hidden'></input>");
+	input.val(elem.attr("data-id"));
+	// input.attr("data-id", elem.attr("data-id"));
+	// input.attr("name", "dependency");
+	// configElement(input);
+	elem.append(input);
 }
 function changeToDiv(elem) {
-	if (elem.prop("tagName") == "DIV") return;
-	console.log(elem); console.log("Div");
-	let div = $("<div class='drag' draggable='true'></div>");
-	div.text(elem.val());
-	div.attr("data-id", elem.attr("data-id"));
-	configElement(div);
-	elem.replaceWith(div);
+	// if (elem.prop("tagName") == "DIV") return;
+	// console.log(elem); console.log("Div");
+	// let div = $("<div class='drag' draggable='true'></div>");
+	// div.text(elem.val());
+	// div.attr("data-id", elem.attr("data-id"));
+	// configElement(div);
+	// elem.replaceWith(div);
+	elem.children().remove();
 }
 
 function addDraggable(dragObject) {
-	let wrapper = $("<div></div>");
-	wrapper.addClass("drag");
-	wrapper.attr("draggable", "true");
+	let wrapper = $("<div class='drag' draggable='true'></div>");
 	wrapper.attr("data-id", dragObject.id);
 	wrapper.html(dragObject.title);
 	configElement(wrapper);
@@ -73,30 +73,4 @@ $(document).ready(() => {
 		}
 		$.ajax(config);
 	});
-	// $("#selectCont").on("dragover", (e) => {
-	// 	e.preventDefault();
-	// 	const drag = $(".drag.ing");
-	// 	if ($("input[data-id='" + drag.attr("data-id") + "']").length) return;
-	// 	//convert to input
-	// 	let newInput = $("<input readonly class='drag' draggable='true'></input>");
-	// 	newInput.attr("data-id", drag.attr("data-id"));
-	// 	newInput.attr("type", "text");
-	// 	newInput.attr("value", drag.text());
-	// 	newInput.on("dragstart", () => {
-	// 		newInput.addClass("ing");
-	// 	});
-	// 	newInput.on("dragend", () => {
-	// 		newInput.removeClass("ing");
-	// 	});
-
-	// 	drag.removeClass("ing");
-	// 	drag.remove();
-	// 	$("#selectCont").append(newInput);
-	// });
-	// $("#searchCont").on("dragover", (e) => {
-	// 	e.preventDefault();
-	// 	//convert to div
-	// 	const drag = $(".drag.ing");
-	// 	$("#searchCont").append(drag);
-	// });
 });

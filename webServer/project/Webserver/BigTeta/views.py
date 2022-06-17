@@ -103,9 +103,18 @@ def upload(request):
 
                 # Create dependencies
                 for dependency in dependencies:
-                    video_2 = Video.objects.get(pk=int(dependency))
-                    relation = Related(video_01 = newdoc, video_02 = video_2)
-                    relation.save()
+                    try:
+                        video_2 = Video.objects.get(pk=int(dependency))
+                        relation = Related(video_01 = newdoc, video_02 = video_2)
+                        relation.save()
+                    except ValueError as e:
+                        logger.error(e)
+                    except Video.DoesNotExist as e:
+                        logger.error(e)
+                    except IntegrityError as e:
+                        logger.error(e)
+                        
+
 
                 # Redirect to the document showFiles after POST
                 return redirect('BigTeta:showFiles')
