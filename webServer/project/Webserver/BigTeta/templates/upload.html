@@ -1,11 +1,11 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<style>
-    
-</style>
-<section>
+{% load static %}
 
+<link rel="stylesheet" href="{% static '/css/upload.css' %}">
+
+<section>
 		<form  action="upload" method="post" enctype="multipart/form-data">
 				{% csrf_token %}
 				<p>{{ form.non_field_errors }}</p>
@@ -14,13 +14,44 @@
 						{{ form.docfile.errors }}
 						{{ form.docfile }}
 				</p>
-				<div class="form-group">
-
-					<input type="text" class="form-control" placeholder="Ingresa el titulo" name = "title">
-					<input type="text" class="form-control" placeholder="Descripcion, no mas de 100 palabras" name = "descripcion">
-			
-				</div>
-				<p><input type="submit" value="Upload" /></p>
+				<p>{{ form.title.label_tag }}</p>
+        <p>
+						{{ form.title.errors }}
+						{{ form.title }}
+		    </p>
+				<p>Select Dependencies</p>
+				<table>
+					<thead>
+						<tr>
+							<th>Selected</th>
+							<th>Search:
+								<input id="searchInput" type="search">
+								<input id="searchBtn" type="button" value="Search">
+							</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>
+								<div id="selectCont" class="content"></div>
+							</td>
+							<td>
+								<div id="searchCont" class="content"></div>
+							</td>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+				<p><input class="large-btn" type="submit" value="Upload" /></p>
 		</form>
 </section>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script type="text/javascript" src="{% static '/js/script.js'  %}"></script>
+<script>
+  function video_add(btn_text) {
+    var text = btn_text; // the ingredient
+
+    console.log(text)
+  }
+</script>
 {% endblock %}

@@ -6,11 +6,19 @@ from django.conf import settings
 import os
 
 from django.contrib.auth import logout
+from django.http import JsonResponse
+from django.db.utils import IntegrityError
+
 
 import subprocess
 
-from .models import Video
+from .models import Video, Related
 from .forms import DocumentForm
+import logging
+
+logging.basicConfig(level=logging.WARNING)
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.INFO)
 
 def index(request):
     return render(request,'index.html')
@@ -61,6 +69,14 @@ def logout_user(request):
     messages.success(request,('Youre now logged out'))
     return redirect('BigTeta:home')
 
+def get_video_by_title(request):
+    segment = request.GET.get('title')
+    if(len(segment)):
+        videos = Video.objects.filter(title__icontains=segment)
+        return JsonResponse(list(videos.values()), safe=False)
+    else:
+        return JsonResponse([], safe=False)
+
 def show_video(request):
     vidid = request.GET.get('id')
     video = Video.objects.get(pk=vidid)
@@ -74,6 +90,7 @@ def upload(request):
             title = request.POST['title']
             form = DocumentForm(request.POST, request.FILES)
             if form.is_valid():
+                dependencies = request.POST.getlist("dependency")
                 newdoc = Video(title=title,docfile = request.FILES['docfile'])
                 newdoc.save()
                 #run split command and save results
@@ -81,10 +98,27 @@ def upload(request):
                 doc_name = os.path.basename(doc_rel_path)
                 doc_abs_path =os.path.join(settings.MEDIA_ROOT , doc_rel_path)
                 command = "ffmpeg -i {0} -f segment -segment_time 5.0 -segment_list {0}.m3u8 -vcodec copy {0}_%d.ts".format(doc_abs_path)
-                print("executing: ",command)
                 subprocess.run(command,shell=True, check=True)
                 newdoc.docfile.name = doc_rel_path+".m3u8"
                 newdoc.save()
+
+                # Create dependencies
+                for dependency in dependencies:
+                    try:
+                        id = int(dependency)
+                        logger.info("Found dependency id: %s", id)
+                        video_2 = Video.objects.get(pk=id)
+                        relation = Related(video_01 = newdoc, video_02 = video_2)
+                        relation.save()
+                    except ValueError as e:
+                        logger.error(e)
+                    except Video.DoesNotExist as e:
+                        logger.error(e)
+                    except IntegrityError as e:
+                        logger.error(e)
+                        
+
+
                 # Redirect to the document showFiles after POST
                 return redirect('BigTeta:showFiles')
         else:
@@ -93,7 +127,7 @@ def upload(request):
         # Load documents for the showFiles page
         documents = Video.objects.all()
         # Render showFiles page with the documents and the form
-        return render(request,'upload.html',{'documents': documents, 'form': form})
+        return render(request,'upload.html', {'documents': documents, 'form': form})
 
     return redirect('BigTeta:home')
 
