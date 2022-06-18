@@ -80,6 +80,11 @@ def get_video_by_title(request):
 def show_video(request):
     vidid = request.GET.get('id')
     video = Video.objects.get(pk=vidid)
+    dependencies = request.POST.getlist("dependency")
+    #for dependency in dependencies:
+    #   id = int(dependency)
+    #    logger.info("Found dependency id: %s", id)
+    #    video_dependency = request.GET.get(id)
     return render(request, 'showVideo.html',{"url":settings.MEDIA_URL+video.docfile.name})
     #return render(request, 'showVideo.html',{"video":video,"MEDIA_URL":settings.MEDIA_URL})
 
@@ -101,7 +106,6 @@ def upload(request):
                 subprocess.run(command,shell=True, check=True)
                 newdoc.docfile.name = doc_rel_path+".m3u8"
                 newdoc.save()
-
                 # Create dependencies
                 for dependency in dependencies:
                     try:
@@ -135,3 +139,6 @@ def showFiles(request):
     documents = Video.objects.all()
     # Render showFiles page with the documents and the form
     return render(request,'showFiles.html',{'documents': documents})
+
+def prueba(request):
+    return render(request,'prueba.html')

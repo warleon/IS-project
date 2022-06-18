@@ -13,5 +13,6 @@ urlpatterns = [
     path('getvideos', views.get_video_by_title, name='getVideos'),
     path('showFiles', views.showFiles, name='showFiles'),
     path('upload', views.upload, name='upload'),
+    path('prueba', views.prueba, name='prueba'),
 
 ]

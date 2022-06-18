@@ -15,6 +15,15 @@
 
 <!-- Or if you want the latest version from the main branch -->
 <!-- <script src="https://cdn.jsdelivr.net/npm/hls.js@canary"></script> -->
+<section>
+	<h1>Videos:<br>
+    <div class="row">
+      <li><a href="/show?id={{ video_dependency.id }}">{{ video_dependency.title }}</a></li><br>
+    </div>
+	</h1>
+</section>
+
+
 <video id="video" controls></video>
 <script>
       var video = document.getElementById('video');
@@ -39,5 +48,7 @@
         });
       }
     </script>
+
+
 </body>
 {% endblock %}
