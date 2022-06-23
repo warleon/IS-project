@@ -1,8 +1,7 @@
 from django.urls import path
-from django.views.generic.base import TemplateView
-
 from . import views
 from . import api
+
 app_name = 'BigTeta'
 urlpatterns = [
     path('', views.showFiles, name='showVideos'),
@@ -14,6 +13,5 @@ urlpatterns = [
     path('getvideos', api.get_video_by_title, name='getVideos'),
     path('showFiles', views.showFiles, name='showFiles'),
     path('upload', views.upload, name='upload'),
-    path('prueba', views.prueba, name='prueba'),
-
+    path('prueba', views.prueba, name='prueba')
 ]
