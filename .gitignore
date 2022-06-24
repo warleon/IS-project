@@ -109,4 +109,4 @@ __pycache__
 #docker
 volumes/
 media/
-# migrations/
+migrations/
