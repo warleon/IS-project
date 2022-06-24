@@ -69,14 +69,10 @@ def logout_user(request):
 
 def show_video(request):
     vidid = request.GET.get('id')
+    
     video = Video.objects.get(pk=vidid)
-    dependencies = request.POST.getlist("dependency")
-    #for dependency in dependencies:
-    #   id = int(dependency)
-    #    logger.info("Found dependency id: %s", id)
-    #    video_dependency = request.GET.get(id)
-    return render(request, 'showVideo.html',{"url":settings.MEDIA_URL+video.docfile.name})
-    #return render(request, 'showVideo.html',{"video":video,"MEDIA_URL":settings.MEDIA_URL})
+
+    return render(request, 'showVideo.html',{"url":settings.MEDIA_URL+video.docfile.name, "video": video})
 
 def upload(request):
     # Handle file upload

@@ -1,54 +1,54 @@
 {% extends 'base.html' %}
 
-      {% block content%}
-      
+{% load static %}
 
-  <!-- Bootstrap core JS-->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js%22%3E"></script>
-  <!-- Core theme JS-->
-  <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
-  <!-- *                               SB Forms JS                               * -->
-  <!-- * Activate your form at https://startbootstrap.com/solution/contact-forms * -->
-  <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *-->
-  <script src="https://cdn.startbootstrap.com/sb-forms-latest.js%22%3E"></script>
-<script src="https://hls-js.netlify.app/dist/hls.js"></script>
+{% block title %} {{ video.title }} {% endblock %}
 
-<!-- Or if you want the latest version from the main branch -->
-<!-- <script src="https://cdn.jsdelivr.net/npm/hls.js@canary"></script> -->
-<section>
-	<h1>Videos:<br>
-    <div class="row">
-      <li><a href="/show?id={{ video_dependency.id }}">{{ video_dependency.title }}</a></li><br>
+{% block content%}
+<section class="pt-3 pt-xl-5">
+  <div class="container mx-0" data-sticky-container>
+    <div class="row g-4">
+      <!-- Video content START -->
+      <div class="col-lg-8">
+        <div class="row g-4">
+          <video id="video" controls></video>
+          <div class=>
+            <h3> {{ video.title }} </h3>
+            <h5> {{ video.author.username }} </h5>
+          </div>
+        </div>
+      </div>
+      <!-- Video content START -->
+      <!-- Dependencies sidebar START -->
+      <div class="col-lg-4">
+        <h3>
+          Dependencies
+        </h3>
+      </div>
+      <!-- Dependencies sidebar END -->
     </div>
-	</h1>
+  </div>
 </section>
 
-
-<video id="video" controls></video>
+<script src="https://hls-js.netlify.app/dist/hls.js"></script>
 <script>
-      var video = document.getElementById('video');
-      if (Hls.isSupported()) {
-        var hls = new Hls({
-          debug: true,
-        });
-        hls.loadSource('{{url}}');
-        hls.attachMedia(video);
-        hls.on(Hls.Events.MEDIA_ATTACHED, function () {
-          video.muted = true;
-          video.play();
-        });
-      }
-      // hls.js is not supported on platforms that do not have Media Source Extensions (MSE) enabled.
-      // When the browser has built-in HLS support (check using canPlayType), we can provide an HLS manifest (i.e. .m3u8 URL) directly to the video element through the src property.
-      // This is using the built-in support of the plain video element, without using hls.js.
-      else if (video.canPlayType('application/x-mpegURL')) {
-        video.src = '{{url}}';
-        video.addEventListener('canplay', function () {
-          video.play();
-        });
-      }
-    </script>
-
-
-</body>
+  var video = document.getElementById('video');
+  if (Hls.isSupported()) {
+    var hls = new Hls({
+      debug: true,
+    });
+    hls.loadSource('{{ url }}');
+    hls.attachMedia(video);
+    hls.on(Hls.Events.MEDIA_ATTACHED, function () {
+      video.muted = true;
+      video.play();
+    });
+  }
+  else if (video.canPlayType('application/x-mpegURL')) {
+    video.src = '{{ url }}';
+    video.addEventListener('canPlayType', function () {
+      video.play();
+    });
+  }
+</script>
 {% endblock %}

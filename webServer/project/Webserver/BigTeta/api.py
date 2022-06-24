@@ -9,9 +9,7 @@ def get_video_by_title(request):
   else:
     return JsonResponse([], safe=False)
 
-
 def get_dependecies_from_video_id(request):
   id = request.GET.get('id')
   relations = Related.objects.filter(video_01=id)
   return JsonResponse(list(videos.values()), safe=False)
-    
