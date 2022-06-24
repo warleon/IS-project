@@ -40,7 +40,17 @@ function addVideo(video, layer) {
   title_a.text(video.title);
   title_a.attr('href', newURL)
   title.append(title_a)
-  author.text('By ' + video.author);
+
+  var url2 = new URL( window.location.protocol + "//" + window.location.host + "/dashboard" );
+
+  url2.searchParams.set('id',video.author.id);
+
+  let userName = $("<a></<a>")
+
+  userName.text(video.author.username);
+  userName.attr('href',url2.toString());
+  author.text('By ');
+  author.append(userName);
 
   btn.on("click", () => {
     level = parseInt(layer.attr("data-level")) + 1;
