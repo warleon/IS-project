@@ -1,5 +1,5 @@
 from email import message
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect,get_object_or_404
 from django.contrib import messages 
 from django.contrib.auth.models import User, auth
 from django.conf import settings 
@@ -129,3 +129,17 @@ def showFiles(request):
 
 def prueba(request):
     return render(request,'prueba.html')
+
+def dashboard(request):
+    videos = Video.objects.filter(author = request.user)
+    return render(request,'dashboard.html',{'documents': videos})
+
+def deletevideo(request,id):
+    video = get_object_or_404(Video,id=id)
+
+    video.delete()
+
+    messages.success(request,"video is deleted")
+
+    return redirect("video:dashboard")
+   

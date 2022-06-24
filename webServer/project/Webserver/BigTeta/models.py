@@ -27,3 +27,8 @@ class Vote(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete = models.CASCADE)
     video = models.ForeignKey(Video, on_delete = models.CASCADE)
     positive = models.BooleanField(default = True)
+
+    class Meta:
+        constraints = [
+            UniqueConstraint(name = 'only_one_vote_per_user', fields = ['user', 'video'])
+        ]

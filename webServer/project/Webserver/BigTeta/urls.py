@@ -12,6 +12,9 @@ urlpatterns = [
     path('show', views.show_video, name='showVideo'),
     path('showFiles', views.showFiles, name='showFiles'),
     path('upload', views.upload, name='upload'),
+    path('dashboard', views.dashboard, name='dashboard'),
     path('getvideos', api.get_video_by_title, name='getVideos'),
+    path('delete/<int:id>',views.deletevideo,name="delete"),
+
     path('getdependencies', api.get_dependecies_from_video_id, name='getdependencies'),
 ]
