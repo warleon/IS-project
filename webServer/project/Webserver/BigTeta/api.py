@@ -1,4 +1,4 @@
-from .models import Video, Related
+from .models import Video, Related, Vote
 from django.http import JsonResponse
 from django.forms.models import model_to_dict
 
@@ -32,3 +32,45 @@ def get_dependecies_from_video_id(request):
   except ValueError as e:
     logger.error(e)
     return JsonResponse([], safe=False)
+
+def get_votes_from_video_id(request):
+  try:
+    id = request.GET.get('id')
+    votes = Vote.objects.filter(video_id=int(id))
+    cvotes = votes.count()
+    pvotes = votes.filter(positive=True).count()
+    nvotes = cvotes - pvotes
+    res = {}
+    res["positive"] = pvotes
+    res["negative"] = nvotes
+    return JsonResponse(res,safe=False)
+  except ValueError as e:
+    return JsonResponse({},safe=False)
+
+def post_vote(request):
+  if request.user.is_authenticated:
+    try:
+      id = int(request.GET.get('videoid'))
+      pos = bool(int(request.GET.get('positive')))
+      vid = Video.objects.get(pk=id)
+      vote = Vote(user=request.user,video=vid,positive=pos)
+      vote.save()
+      res = {}
+      res["positive"] = int(pos)
+      res["negative"] = int(not pos) 
+      return JsonResponse(res,safe=False)
+    except IntegrityError as e:
+      vote = Vote.objects.get(Q(user=request.user.id) and Q(video=id))
+      bef = vote.positive
+      vote.positive = pos
+      vote.save()
+      res = {}
+      res["positive"] = int(pos) - int(bef)
+      res["negative"] = int(not pos) - int(not bef)
+      return JsonResponse(res,safe=False)
+    except Vote.DoesNotExist as e:
+      pass
+    except ValueError as e:
+      pass
+
+  return JsonResponse({},safe=False)
