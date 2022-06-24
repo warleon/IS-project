@@ -5,16 +5,22 @@
 {% block title %} {{ video.title }} {% endblock %}
 
 {% block content%}
-<section class="pt-3 pt-xl-5 pb-3">
+<section class="pt-2 pt-xl-3 pb-2">
   <div class="container" data-sticky-container>
     <div class="row g-4">
       <!-- Video content START -->
       <div class="col-lg-8">
         <div class="row g-4">
           <video id="video" controls></video>
-          <div class=>
-            <h3> {{ video.title }} </h3>
+          <div>
+            <h2> {{ video.title }} </h2>
             <h5> {{ video.author.username }} </h5>
+            <h6> {{ video.date_published | date:"F, d Y" }} </h6>
+            <h6> {{ video.date_updated | date:"F, d Y" }} </h6>
+          </div>
+          <div class="">
+            <h3> Description </h3>
+            <p> {{ video.description }} </p>
           </div>
         </div>
       </div>

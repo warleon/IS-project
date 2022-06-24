@@ -79,10 +79,11 @@ def upload(request):
     if request.user.is_authenticated:
         if request.method == 'POST':
             title = request.POST['title']
+            description = request.POST['description']
             form = DocumentForm(request.POST, request.FILES)
             if form.is_valid():
                 dependencies = request.POST.getlist("dependency")
-                newdoc = Video(title=title,docfile = request.FILES['docfile'], author=request.user)
+                newdoc = Video(title=title,docfile = request.FILES['docfile'], author=request.user, description=description)
                 newdoc.save()
                 #run split command and save results
                 doc_rel_path = newdoc.docfile.name

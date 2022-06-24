@@ -1,6 +1,11 @@
 function addVideo(video, layer) {
+  let wrapper_txt = `<div
+                      class="row g-1 p-2">
+                    </div>`
+	let wrapper = $(wrapper_txt);
 
-	let wrapper = $("<div></div>");
+  let details_txt = `<div class="col-4"></div>`
+  let details = $(details_txt)
 
 	let title = $("<div></div>");
 
@@ -10,9 +15,14 @@ function addVideo(video, layer) {
 	let author = $(author_txt);
   
   // Button text for styled design
+  let div_btn_txt = `<div
+                      class="col d-flex justify-content-center align-items-center">
+                    </div>`
+  let div_btn = $(div_btn_txt)
   let btn_txt = `<button
                   type="button"
-                  class="btn btn-outline-success btn-sm text-uppercase text-wrap text-break">
+                  class="btn btn-outline-success btn-sm 
+                  text-uppercase text-wrap text-break">
                     view dependencies
                 </button>`;
 	let btn = $(btn_txt);
@@ -44,9 +54,12 @@ function addVideo(video, layer) {
 		addLayer(video.id, level);
 	})
 
-	wrapper.append(title);
-	wrapper.append(author);
-	wrapper.append(btn);
+	details.append(title);
+	details.append(author);
+  div_btn.append(btn)
+
+  wrapper.append(details)
+	wrapper.append(div_btn);
 
 	layer.append(wrapper);
 }
@@ -54,7 +67,7 @@ function addVideo(video, layer) {
 function addLayer(videoId, level) {
 	// Create styled layer
   let layer_txt = `<div
-                    class='border border-2 border-dark rounded m-2 p-2'>
+                    class='border border-2 border-dark rounded m-1 p-1'>
                   </div>`
 	let layer = $(layer_txt);
 	layer.attr("data-level", level);

@@ -1,3 +1,4 @@
+from datetime import datetime
 from django.conf import settings
 from django.db import models
 from django.db.models import UniqueConstraint
@@ -7,6 +8,9 @@ class Video(models.Model):
     id = models.BigAutoField(primary_key = True)
     author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete = models.CASCADE)
     title = models.CharField(max_length = 100, blank = False)
+    description = models.TextField(default="")
+    date_published = models.DateTimeField(default=datetime.now(), blank=None, null=None)
+    date_updated = models.DateTimeField(default=datetime.now(), blank=None, null=None)
     docfile = models.FileField(upload_to = 'documents/%Y/%m/%d',default="newvid")
 
 class Related(models.Model):
