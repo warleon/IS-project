@@ -131,8 +131,12 @@ def prueba(request):
     return render(request,'prueba.html')
 
 def dashboard(request):
-    videos = Video.objects.filter(author = request.user)
-    return render(request,'dashboard.html',{'documents': videos})
+
+    userid = int(request.GET.get('id'))
+    usuario = User.objects.get(pk = userid)  
+    videos = Video.objects.filter(author = usuario)
+
+    return render(request,'dashboard.html',{'usuario':usuario , 'documents': videos})
 
 def deletevideo(request,id):
     video = get_object_or_404(Video,id=id)
