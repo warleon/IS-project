@@ -18,6 +18,13 @@
             <h6> {{ video.date_published | date:"F, d Y" }} </h6>
             <h6> {{ video.date_updated | date:"F, d Y" }} </h6>
           </div>
+          <div>
+            {% csrf_token %}
+            <button id="voteup" > Like </button>
+            <div id="likecount"></div>
+            <button id="votedown">Dislike</button>
+            <div id="dislikecount"></div>
+          </div>
           <div class="">
             <h3> Description </h3>
             <p> {{ video.description }} </p>

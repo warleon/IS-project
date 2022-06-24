@@ -1,6 +1,7 @@
 from .models import Video, Related, Vote
 from django.http import JsonResponse
 from django.forms.models import model_to_dict
+from django.db.utils import IntegrityError
 
 import logging
 
@@ -50,8 +51,8 @@ def get_votes_from_video_id(request):
 def post_vote(request):
   if request.user.is_authenticated:
     try:
-      id = int(request.GET.get('videoid'))
-      pos = bool(int(request.GET.get('positive')))
+      id = int(request.POST['id'])
+      pos = bool(int(request.POST['positive']))
       vid = Video.objects.get(pk=id)
       vote = Vote(user=request.user,video=vid,positive=pos)
       vote.save()
@@ -60,7 +61,9 @@ def post_vote(request):
       res["negative"] = int(not pos) 
       return JsonResponse(res,safe=False)
     except IntegrityError as e:
-      vote = Vote.objects.get(Q(user=request.user.id) and Q(video=id))
+      id = int(request.POST['id'])
+      pos = bool(int(request.POST['positive']))
+      vote = Vote.objects.get(user=request.user.id,video=id)
       bef = vote.positive
       vote.positive = pos
       vote.save()
@@ -68,9 +71,14 @@ def post_vote(request):
       res["positive"] = int(pos) - int(bef)
       res["negative"] = int(not pos) - int(not bef)
       return JsonResponse(res,safe=False)
+    except Vote.MultipleObjectsReturned as e:
+      pass
     except Vote.DoesNotExist as e:
       pass
     except ValueError as e:
       pass
 
-  return JsonResponse({},safe=False)
+  res = {}
+  res["positive"] = 0
+  res["negative"] = 0
+  return JsonResponse(res,safe=False)
