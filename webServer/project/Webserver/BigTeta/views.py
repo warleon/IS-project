@@ -1,14 +1,12 @@
 from email import message
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect,get_object_or_404
 from django.contrib import messages 
 from django.contrib.auth.models import User, auth
 from django.conf import settings 
 import os
 
 from django.contrib.auth import logout
-from django.http import JsonResponse
 from django.db.utils import IntegrityError
-
 
 import subprocess
 
@@ -69,29 +67,23 @@ def logout_user(request):
     messages.success(request,('Youre now logged out'))
     return redirect('BigTeta:home')
 
-def get_video_by_title(request):
-    segment = request.GET.get('title')
-    if(len(segment)):
-        videos = Video.objects.filter(title__icontains=segment)
-        return JsonResponse(list(videos.values()), safe=False)
-    else:
-        return JsonResponse([], safe=False)
-
 def show_video(request):
     vidid = request.GET.get('id')
+    
     video = Video.objects.get(pk=vidid)
-    return render(request, 'showVideo.html',{"url":settings.MEDIA_URL+video.docfile.name})
-    #return render(request, 'showVideo.html',{"video":video,"MEDIA_URL":settings.MEDIA_URL})
+
+    return render(request, 'showVideo.html',{"url":settings.MEDIA_URL+video.docfile.name, "video": video})
 
 def upload(request):
     # Handle file upload
     if request.user.is_authenticated:
         if request.method == 'POST':
             title = request.POST['title']
+            description = request.POST['description']
             form = DocumentForm(request.POST, request.FILES)
             if form.is_valid():
                 dependencies = request.POST.getlist("dependency")
-                newdoc = Video(title=title,docfile = request.FILES['docfile'])
+                newdoc = Video(title=title,docfile = request.FILES['docfile'], author=request.user, description=description)
                 newdoc.save()
                 #run split command and save results
                 doc_rel_path = newdoc.docfile.name
@@ -101,7 +93,6 @@ def upload(request):
                 subprocess.run(command,shell=True, check=True)
                 newdoc.docfile.name = doc_rel_path+".m3u8"
                 newdoc.save()
-
                 # Create dependencies
                 for dependency in dependencies:
                     try:
@@ -135,3 +126,20 @@ def showFiles(request):
     documents = Video.objects.all()
     # Render showFiles page with the documents and the form
     return render(request,'showFiles.html',{'documents': documents})
+
+def prueba(request):
+    return render(request,'prueba.html')
+
+def dashboard(request):
+    videos = Video.objects.filter(author = request.user)
+    return render(request,'dashboard.html',{'documents': videos})
+
+def deletevideo(request,id):
+    video = get_object_or_404(Video,id=id)
+
+    video.delete()
+
+    messages.success(request,"video is deleted")
+
+    return redirect("video:dashboard")
+   
