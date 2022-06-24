@@ -24,6 +24,7 @@
         <h3>
           Dependencies
         </h3>
+        <div id="dependencies" data-id="{{ video.id }}"></div>
       </div>
       <!-- Dependencies sidebar END -->
     </div>
@@ -31,22 +32,22 @@
 </section>
 
 <script src="https://hls-js.netlify.app/dist/hls.js"></script>
+<script type="text/javascript" src="{% static '/js/showVideo.js'  %}"></script>
 <script>
   var video = document.getElementById('video');
   if (Hls.isSupported()) {
     var hls = new Hls({
-      debug: true,
+      debug: false,
     });
     hls.loadSource('{{ url }}');
     hls.attachMedia(video);
     hls.on(Hls.Events.MEDIA_ATTACHED, function () {
-      video.muted = true;
-      video.play();
+      // video.play();
     });
   }
   else if (video.canPlayType('application/x-mpegURL')) {
     video.src = '{{ url }}';
-    video.addEventListener('canPlayType', function () {
+    video.addEventListener('canplay', function () {
       video.play();
     });
   }

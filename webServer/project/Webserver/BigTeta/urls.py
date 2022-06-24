@@ -10,8 +10,8 @@ urlpatterns = [
     path('register', views.register, name='register'),
     path('logout', views.logout_user, name='logout'),
     path('show', views.show_video, name='showVideo'),
-    path('getvideos', api.get_video_by_title, name='getVideos'),
     path('showFiles', views.showFiles, name='showFiles'),
     path('upload', views.upload, name='upload'),
-    path('prueba', views.prueba, name='prueba')
+    path('getvideos', api.get_video_by_title, name='getVideos'),
+    path('getdependencies', api.get_dependecies_from_video_id, name='getdependencies'),
 ]
