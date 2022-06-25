@@ -12,6 +12,7 @@ class Video(models.Model):
     date_published = models.DateTimeField(default=django.utils.timezone.now, blank=None, null=None)
     date_updated = models.DateTimeField(default=django.utils.timezone.now, blank=None, null=None)
     docfile = models.FileField(upload_to = 'documents/%Y/%m/%d',default="newvid")
+    thumbnail = models.FileField(upload_to='documents/%Y/%m/%d', default="newthumbnail")
 
 class Related(models.Model):
     video_01 = models.ForeignKey(Video, on_delete = models.CASCADE, related_name = 'video')
