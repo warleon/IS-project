@@ -26,6 +26,7 @@ def get_dependecies_from_video_id(request):
       video =Video.objects.get(pk=relation.video_02_id)
       json = model_to_dict(video)
       del json["docfile"]
+      del json["thumbnail"]
       json["author"] = model_to_dict(video.author)
       videos.append(json)
     return JsonResponse(videos, safe=False)
