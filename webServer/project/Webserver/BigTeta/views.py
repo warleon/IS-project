@@ -19,7 +19,8 @@ logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 
 def index(request):
-    return render(request,'index.html')
+    documents = Video.objects.all()
+    return render(request,'index.html',{'documents': documents})
 
 def login(request):
     if request.method == 'POST':
@@ -89,9 +90,12 @@ def upload(request):
                 doc_rel_path = newdoc.docfile.name
                 doc_name = os.path.basename(doc_rel_path)
                 doc_abs_path =os.path.join(settings.MEDIA_ROOT , doc_rel_path)
+                thumbnail_command = "ffmpeg -i {0} -ss 00:00:00.000 -vframes 1 {0}.png".format(doc_abs_path)
                 command = "ffmpeg -i {0} -f segment -segment_time 5.0 -segment_list {0}.m3u8 -vcodec copy {0}_%d.ts".format(doc_abs_path)
                 subprocess.run(command,shell=True, check=True)
+                subprocess.run(thumbnail_command,shell=True, check=True)
                 newdoc.docfile.name = doc_rel_path+".m3u8"
+                newdoc.thumbnail.name = doc_rel_path+".png"
                 newdoc.save()
                 # Create dependencies
                 for dependency in dependencies:
