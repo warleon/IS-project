@@ -8,30 +8,72 @@
 <section class="pt-2 pt-xl-3 pb-2">
   <div class="container" data-sticky-container>
     <div class="row g-4">
-      <!-- Video content START -->
+      <!-- Main content START -->
       <div class="col-lg-8">
         <div class="row g-4">
-          <video id="video" controls></video>
-          <div>
-            <h2> {{ video.title }} </h2>
-            <h5> {{ video.author.username }} </h5>
-            <h6> {{ video.date_published | date:"F, d Y" }} </h6>
-            <h6> {{ video.date_updated | date:"F, d Y" }} </h6>
+          <!-- Video content START -->
+          <div class="col-12 position-relative">
+            <div class="video-player rounded-3">
+              <video id="video" class="col-12" controls></video>
+            </div>
           </div>
-          <div>
-            {% csrf_token %}
-            <button id="voteup" > Like </button>
-            <div id="likecount"></div>
-            <button id="votedown">Dislike</button>
-            <div id="dislikecount"></div>
+          <!-- Video content END -->
+          <div class="col-12">
+            <!-- Video details START -->
+            <div class="row">
+              <h2> {{ video.title }} </h2>
+              <h5> {{ video.author.username }} </h5>
+            </div>
+            <!-- Video details END -->
+            <!-- Date content START -->
+            <div class="row">
+              <p class="col fw-light"> Published at: {{ video.date_published | date:"F, d Y" }} </p>
+              <p class="col fw-light"> Updated at: {{ video.date_updated | date:"F, d Y" }} </p>
+            </div>
+            <!-- Date content END -->
+            <div class="row p-2">
+              {% csrf_token %}
+              <div class="col-md-auto text-uppercase">
+                <div class="row">
+                  <button
+                    id="voteup"
+                    class="col btn btn-outline-primary btn-sm text-uppercase">
+                    Like
+                  </button>
+                  <div id="likecount" class="d-flex col align-items-center"></div>
+                </div>
+              </div>
+              <div class="col-md-auto">
+                <div class="row">
+                  <button
+                    id="votedown"
+                    class="col btn btn-outline-primary btn-sm text-uppercase">
+                    Dislike
+                  </button>
+                  <div id="dislikecount" class="d-flex col align-items-center"></div>
+                </div>
+              </div>
+            </div>
           </div>
-          <div class="">
-            <h3> Description </h3>
-            <p> {{ video.description }} </p>
+          <!-- Description content START -->
+          <div class="col-12">
+            <div class="card border border-2">
+              <!-- Description header START -->
+              <div class="card-header border-bottom">
+                <h4 class="mb-0"> Description </h4>
+              </div>
+              <!-- Description header END -->
+              <!-- Description body START -->
+              <div class="card-body">
+                <p class="fw-light"> {{ video.description }} </p>
+              </div>
+              <!-- Description body END -->
+            </div>
           </div>
+          <!-- Description START -->
         </div>
       </div>
-      <!-- Video content START -->
+      <!-- Main content START -->
       <!-- Dependencies sidebar START -->
       <div class="col-lg-4">
         <h3>
