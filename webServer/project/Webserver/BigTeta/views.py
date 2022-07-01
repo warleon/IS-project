@@ -7,6 +7,7 @@ import os
 
 from django.contrib.auth import logout
 from django.db.utils import IntegrityError
+from django.forms.models import model_to_dict
 
 import subprocess
 
@@ -79,8 +80,17 @@ def update_video(request):
     if request.method == 'GET':
         namevid = int(request.GET.get('id'))
         help = Video.objects.get(pk = namevid)
+        dependencies = Related.objects.filter(video_01_id = namevid)
+        videos=[]
+        for relation in dependencies:
+            video =Video.objects.get(pk=relation.video_02_id)
+            json = model_to_dict(video)
+            del json["docfile"]
+            del json["thumbnail"]
+            json["author"] = model_to_dict(video.author)
+            videos.append(json)
         form = DocumentForm() # A empty, unbound form
-        return render(request, 'update.html',{"form":form, "video" : help})
+        return render(request, 'update.html',{"form":form, "video" : help, "dependencies":videos})
     elif request.method == 'POST':
         title = request.POST['title']
         description = request.POST['description']
