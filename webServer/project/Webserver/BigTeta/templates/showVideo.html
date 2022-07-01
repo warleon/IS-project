@@ -21,7 +21,14 @@
           <div class="col-12">
             <!-- Video details START -->
             <div class="row">
-              <h2> {{ video.title }} </h2>
+              <div class="row col-md-auto">
+                <h2 class="col"> {{ video.title }} </h2>
+                {% if user.is_authenticated %}
+                {% if user.id == video.author.id %}
+                <a href="/update?id={{ video.id }}" class="col btn btn-light" role="button" aria-disabled="true"><i class="bi bi-pencil"></i></a>
+                {% endif %}
+                {% endif %}
+              </div>
               <h5> {{ video.author.username }} </h5>
             </div>
             <!-- Video details END -->

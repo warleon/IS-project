@@ -72,8 +72,40 @@ def show_video(request):
     vidid = request.GET.get('id')
     
     video = Video.objects.get(pk=vidid)
-
+    
     return render(request, 'showVideo.html',{"url":settings.MEDIA_URL+video.docfile.name, "video": video})
+
+def update_video(request):
+    if request.method == 'GET':
+        namevid = int(request.GET.get('id'))
+        help = Video.objects.get(pk = namevid)
+        form = DocumentForm() # A empty, unbound form
+        return render(request, 'update.html',{"form":form, "video" : help})
+    elif request.method == 'POST':
+        title = request.POST['title']
+        description = request.POST['description']
+        #form = DocumentForm(request.POST)
+        namevid = int(request.POST.get('id'))
+        help = Video.objects.get(pk = namevid)
+        dependencies = request.POST.getlist("dependency")
+        help.title = title
+        help.description = description
+        help.save()
+        for dependency in dependencies:
+            try:
+                id = int(dependency)
+                logger.info("Found dependency id: %s", id)
+                video_2 = Video.objects.get(pk=id)
+                relation = Related(video_01 = help, video_02 = video_2)
+                relation.save()
+            except ValueError as e:
+                logger.error(e)
+            except Video.DoesNotExist as e:
+                logger.error(e)
+            except IntegrityError as e:
+                logger.error(e)
+        return render(request, 'showVideo.html',{"url":settings.MEDIA_URL+help.docfile.name, "video": help})
+
 
 def upload(request):
     # Handle file upload
@@ -141,6 +173,7 @@ def dashboard(request):
     videos = Video.objects.filter(author = usuario)
 
     return render(request,'dashboard.html',{'usuario':usuario , 'documents': videos})
+
 
 def deletevideo(request,id):
     video = get_object_or_404(Video,id=id)
