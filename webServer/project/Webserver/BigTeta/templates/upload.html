@@ -11,48 +11,60 @@
 <section class="pt-2 pt-xl-3 pb-2">
   <div class="container" data-sticky-container>
     <div class="row">
+      <div class="text-center fw-bold">
+        <h2>Upload video form</h2>
+      </div>
+      <hr>
       <form action="upload" method="post" enctype="multipart/form-data" >
           {% csrf_token %}
           <p>{{ form.non_field_errors }}</p>
-          <p>{{ form.docfile.label_tag }} {{ form.docfile.help_text }}</p>
+          <p class="text-uppercase form-label">{{ form.docfile.label_tag }} {{ form.docfile.help_text }}</p>
           <p>
             {{ form.docfile.errors }}
             {{ form.docfile }}
           </p>
-          <p>{{ form.title.label_tag }}</p>
+          <p class="text-uppercase form-label">{{ form.title.label_tag }}</p>
           <p>
             {{ form.title }}
           </p>
-          <p>{{ form.description.label_tag }}</p>
+          <p class="text-uppercase form-label">{{ form.description.label_tag }}</p>
           <p class="text-break">
             {{ form.description }}
           </p>
-        <header>
-          <h2>Select Dependencies</h2>
-        </header>
-          <table class="styled-table">
-            <thead>
-              <tr class="row100 head">
-                <th class="cell100 column1">Selected</th>
-                <th class="cell100 column2">Search:
-                  <input id="searchInput" type="search">
-                  <input id="searchBtn" type="button" value="Search">
+          <div class="text-center">
+            <h3>Select Dependencies</h3>
+          </div>
+          <hr>
+          <table class="table">
+            <thead class="col-12">
+              <tr class="table-primary align-middle">
+                <th class="col-6">Selected</th>
+                <th class="col-6">
+                  <p class="w-100">
+                    Search:
+                  </p>
+                  <div class="col-12 input-group mb-3">
+                    <input class="col-7 form-control" placeholder="Search here..." id="searchInput" type="search">
+                    <input class="col-3 btn btn-outline-success btn-sm" id="searchBtn" type="button" value="Search">
+                  <div>
                 </th>
               </tr>
             </thead>
-            <tbody>
+            <tbody class="col-12">
               <tr>
-                <td>
-                  <div id="selectCont" class="content"></div>
+                <td clss="col-6">
+                  <div id="selectCont" class="col-6 content border-end border-dark border-2"></div>
                 </td>
-                <td>
-                  <div id="searchCont" class="content"></div>
+                <td class="col-6">
+                  <div id="searchCont" class="content col-6 border-start border-dark border-2"></div>
                 </td>
                 </td>
               </tr>
             </tbody>
           </table>
-          <p><input class="large-btn" type="submit" value="Upload" /></p>
+          <div class="row col-12">
+          <button class="align-items-center btn btn-outline-primary" type="submit">Upload</button>
+          </div>
       </form>
     </div>
   </div>

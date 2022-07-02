@@ -13,7 +13,7 @@
 .content{
 	overflow-y: scroll;
 	height: 19em;
-	width: 50vw;
+  width: 100%;
 }
 .large-btn {
   height: 3rem;
@@ -23,14 +23,12 @@
 }
 
 .drag {
-  margin: 2rem;
-  padding: 2rem;
   background-color: rgba(255, 255, 255, 0.432);
   color: rgb(2, 1, 1);
   border: 1px solid rgb(93, 106, 109);
   cursor: move;
-  height:25px;
-  width:180px;
+  height:auto;
+  width:auto;
 }
 
 .drag.ing {
@@ -38,7 +36,6 @@
 }
 
 .fill {
-  width: 100%;
   display: table-cell;
 }
 .cell {
@@ -49,15 +46,12 @@
   color: white;
   margin: 0;
   padding: 0;
-  width: 100%;
 }
 
 #mainTable .content-col {
-  width: 48%;
 }
 #mainTable .left-col {
   height: 10rem;
-  width: 4%;
 }
 .sideTitle p {
   margin: auto;
@@ -69,6 +63,7 @@
   background-color: #4273cf;
   color: #ffffff;
   text-align: left;
+  width:100%;
 }
 .styled-table th,
 .styled-table td {
