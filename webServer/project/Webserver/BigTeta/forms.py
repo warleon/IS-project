@@ -17,9 +17,8 @@ class DocumentForm(forms.Form):
     description = forms.CharField(
         label = 'Description',
         strip = True,
-        widget = forms.TextInput(
+        widget = forms.Textarea(
             attrs = {
-                'style': 'width: 100%',
-                'class': 'myfieldclass'
+                'class': 'w-100'
             })
     )

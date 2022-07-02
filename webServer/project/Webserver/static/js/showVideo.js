@@ -1,32 +1,16 @@
 function addVideo(video, layer) {
   let wrapper_txt = `<div
-                      class="row g-1 p-2">
+                      class="row g-1 p-2 border-start border-primary border-5 rounded">
                     </div>`
   let wrapper = $(wrapper_txt);
 
-  let details_txt = `<div class="col-4"></div>`
-  let details = $(details_txt)
-
-  let title = $("<div></div>");
-
-  let author_txt = `<div
-                      class="fw-light fst-italic">
-                    </div>`
-  let author = $(author_txt);
-
-  // Button text for styled design
-  let div_btn_txt = `<div
-                      class="col d-flex justify-content-center align-items-center">
-                    </div>`
-  let div_btn = $(div_btn_txt)
-  let btn_txt = `<button
-                  type="button"
-                  class="btn btn-outline-success btn-sm 
-                  text-uppercase text-wrap text-break">
-                    view dependencies
-                </button>`;
-  let btn = $(btn_txt);
-
+  let wrapper_btn_txt = `<div
+                          class="d-flex align-items-center">
+                        </i></div>`
+  let wrapper_btn_a = $(`<a
+                        class="mx-1 btn btn-outline-danger btn-round mb-0">
+                        <i class="fa-solid fa-play"></i></a>`);
+  
   var currentURL = new URL($(location).attr('href'));
   var search_params = currentURL.searchParams;
 
@@ -35,17 +19,48 @@ function addVideo(video, layer) {
   currentURL.search = search_params.toString();
   var newURL = currentURL.toString();
 
-  let title_a = $("<a></<a>")
+  wrapper_btn_a.attr('href', newURL)
+  let wrapper_btn = $(wrapper_btn_txt)
+  wrapper_btn.append(wrapper_btn_a)
+
+  let details_txt = `<div class="col"></div>`
+  let details = $(details_txt)
+
+  let title = $(`<div
+                  ></div>`);
+
+  let author_txt = `<div
+                      class="fw-light fst-italic">
+                    </div>`
+  let author = $(author_txt);
+
+  // Button text for styled design
+  let div_btn_txt = `<div
+                      class="col-lg-6 col-md-auto d-flex justify-content-sm-end align-items-center">
+                    </div>`
+  let div_btn = $(div_btn_txt)
+  let btn_txt = `<button
+                  type="button"
+                  class="btn btn-outline-success btn-sm 
+                  text-uppercase text-wrap">
+                    view dependencies
+                </button>`;
+  let btn = $(btn_txt);
+
+  let title_a = $(`<a
+                    class="text-decoration-none text-primary fw-bold"
+                    ></a>`)
 
   title_a.text(video.title);
-  title_a.attr('href', newURL)
   title.append(title_a)
 
   var url2 = new URL( window.location.protocol + "//" + window.location.host + "/dashboard" );
 
   url2.searchParams.set('id',video.author.id);
 
-  let userName = $("<a></<a>")
+  let userName = $(`<a
+                    class="text-decoration-none text-secondary"
+                    ></<a>`)
 
   userName.text(video.author.username);
   userName.attr('href',url2.toString());
@@ -63,21 +78,27 @@ function addVideo(video, layer) {
     }
     addLayer(video.id, level);
   })
+  
+  let details_author_txt = `<div class="w-100"></div>`
+  let details_author = $(details_author_txt)
 
-  details.append(title);
-  details.append(author);
+  details_author.append(title);
+  details_author.append(author);
+  wrapper_btn.append(details_author)
+  details.append(wrapper_btn)
   div_btn.append(btn)
 
   wrapper.append(details)
   wrapper.append(div_btn);
-
+  
+  layer.append("<hr>");
   layer.append(wrapper);
 }
 
 function addLayer(videoId, level) {
   // Create styled layer
   let layer_txt = `<div
-                    class='border border-2 border-dark rounded m-1 p-1'>
+                    class='m-1 px-1 py-3 border-bottom border-2 border-dark'>
                   </div>`
   let layer = $(layer_txt);
   layer.attr("data-level", level);
@@ -92,6 +113,7 @@ function addLayer(videoId, level) {
     },
     success: (data) => {
       if (data.length) {
+        layer.append($(`<h5 class="mb-4 text-wrap text-uppercase text-bold text-secondary">Layer ` + level + `</h5>`))
         for (video of data) {
           addVideo(video, layer);
         }

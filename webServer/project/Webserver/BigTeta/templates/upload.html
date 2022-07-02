@@ -1,54 +1,61 @@
 {% extends 'base.html' %}
 
-{% block content %}
 {% load static %}
+
+{% block title %} Upload {% endblock %}
+
+{% block content %}
 
 <link rel="stylesheet" href="{% static '/css/upload.css' %}">
 
-<section>
-		<form  action="upload" method="post" enctype="multipart/form-data" >
-				{% csrf_token %}
-				<p>{{ form.non_field_errors }}</p>
-				<p>{{ form.docfile.label_tag }} {{ form.docfile.help_text }}</p>
-				<p>
-						{{ form.docfile.errors }}
-						{{ form.docfile }}
-				</p>
-				<p>{{ form.title.label_tag }}</p>
-       		<p>
-						{{ form.title }}
-		    </p>
-				<p>{{ form.description.label_tag }}</p>
-       		<p>
-						{{ form.description }}
-		    </p>
-			<header>
-				<h2>Select Dependencies</h2>
-			</header>
-				<table class="styled-table">
-					<thead>
-						<tr class="row100 head">
-							<th class="cell100 column1">Selected</th>
-							<th class="cell100 column2">Search:
-								<input id="searchInput" type="search">
-								<input id="searchBtn" type="button" value="Search">
-							</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr>
-							<td>
-								<div id="selectCont" class="content"></div>
-							</td>
-							<td>
-								<div id="searchCont" class="content"></div>
-							</td>
-							</td>
-						</tr>
-					</tbody>
-				</table>
-				<p><input class="large-btn" type="submit" value="Upload" /></p>
-		</form>
+<section class="pt-2 pt-xl-3 pb-2">
+  <div class="container" data-sticky-container>
+    <div class="row">
+      <form action="upload" method="post" enctype="multipart/form-data" >
+          {% csrf_token %}
+          <p>{{ form.non_field_errors }}</p>
+          <p>{{ form.docfile.label_tag }} {{ form.docfile.help_text }}</p>
+          <p>
+            {{ form.docfile.errors }}
+            {{ form.docfile }}
+          </p>
+          <p>{{ form.title.label_tag }}</p>
+          <p>
+            {{ form.title }}
+          </p>
+          <p>{{ form.description.label_tag }}</p>
+          <p class="text-break">
+            {{ form.description }}
+          </p>
+        <header>
+          <h2>Select Dependencies</h2>
+        </header>
+          <table class="styled-table">
+            <thead>
+              <tr class="row100 head">
+                <th class="cell100 column1">Selected</th>
+                <th class="cell100 column2">Search:
+                  <input id="searchInput" type="search">
+                  <input id="searchBtn" type="button" value="Search">
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <div id="selectCont" class="content"></div>
+                </td>
+                <td>
+                  <div id="searchCont" class="content"></div>
+                </td>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <p><input class="large-btn" type="submit" value="Upload" /></p>
+      </form>
+    </div>
+  </div>
 </section>
 <script type="text/javascript" src="{% static '/js/upload.js'  %}"></script>
 {% endblock %}

@@ -18,16 +18,24 @@
             </div>
           </div>
           <!-- Video content END -->
-          <div class="col-12">
+          <div class="col-12 border-start border-primary border-5 rounded">
             <!-- Video details START -->
             <div class="row">
-              <div class="row col-md-auto">
-                <h2 class="col"> {{ video.title }} </h2>
+              <div class="row">
+                <!-- Video title START -->
+                <div class="d-flex col-md-auto align-items-center">
+                  <h2 class="d-inline"> {{ video.title }} </h2>
                 {% if user.is_authenticated %}
-                {% if user.id == video.author.id %}
-                <a href="/update?id={{ video.id }}" class="col btn btn-light" role="button" aria-disabled="true"><i class="bi bi-pencil"></i></a>
+                  {% if user.id == video.author.id %}
+                    <a href="/update?id={{ video.id }}"
+                      class="d-inline btn btn-light"
+                      role="button" aria-disabled="true">
+                        <i class="bi bi-pencil-square"></i>
+                    </a>
+                  {% endif %}
                 {% endif %}
-                {% endif %}
+                </div>
+                <!-- Video item END -->
               </div>
               <h5> {{ video.author.username }} </h5>
             </div>
@@ -64,15 +72,22 @@
           </div>
           <!-- Description content START -->
           <div class="col-12">
-            <div class="card border border-2">
+            <div class="card border border-dark border-3">
               <!-- Description header START -->
-              <div class="card-header border-bottom">
-                <h4 class="mb-0"> Description </h4>
+              <div class="bg-secondary card-header border-bottom py-3" style="--bs-bg-opacity: .35;"
+                  data-bs-toggle="collapse"
+                  href="#collapseDescription"
+                  role="button"
+                  aria-expanded="false"
+                  aria-controls="collapseDescription">
+                <h3 class="mb-0"> <i class="bi bi-box-arrow-down-right ms-2 fw-bold"></i> Description </h3>
               </div>
               <!-- Description header END -->
               <!-- Description body START -->
-              <div class="card-body">
-                <p class="fw-light"> {{ video.description }} </p>
+              <div class="collapse" id="collapseDescription">
+                <div class="card-body">
+                  <p class="fw-light"> {{ video.description }} </p>
+                </div>
               </div>
               <!-- Description body END -->
             </div>
@@ -83,10 +98,15 @@
       <!-- Main content START -->
       <!-- Dependencies sidebar START -->
       <div class="col-lg-4">
-        <h3>
-          Dependencies
-        </h3>
-        <div id="dependencies" data-id="{{ video.id }}"></div>
+        <div class="card border border-dark border-3">
+          <div class="bg-secondary card-header border-bottom py-3" style="--bs-bg-opacity: .35;">
+            <h3 class="mb-0">
+              Dependencies
+            </h3>
+          </div>
+          <div class="card-body" id="dependencies" data-id="{{ video.id }}">
+          </div>
+        <div>
       </div>
       <!-- Dependencies sidebar END -->
     </div>
