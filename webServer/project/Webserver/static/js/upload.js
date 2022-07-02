@@ -34,7 +34,7 @@ function changeToDiv(elem) {
 }
 
 function addDraggable(dragObject) {
-	let wrapper = $("<div class='btn btn-success drag align-middle m-2 px-3' draggable='true'></div>");
+	let wrapper = $("<div class='btn bg-success drag align-middle m-2 px-3 text-white' draggable='true'></div>");
 	wrapper.attr("data-id", dragObject.id);
 	wrapper.html(dragObject.title);
 	configElement(wrapper);
