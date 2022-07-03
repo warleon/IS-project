@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{% load static %}
+
+<link rel="stylesheet" href="{% static '/css/upload.css' %}">
+
+<section class="pt-2 pt-xl-3 pb-2">
+  <div class="container" data-sticky-container>
+    <div class="row">
+    <div class="text-center fw-bold">
+      <h2>Update video form</h2>
+    </div>
+    <hr>
+		<form  action="update" method="post" enctype="multipart/form-data" >
+				{% csrf_token %}
+				<p class="text-uppercase form-label">{{ form.title.label_tag }}</p>
+       		<p>
+						{{ form.title }}
+		    </p>
+				<p class="text-uppercase form-label">{{ form.description.label_tag }}</p>
+       		<p>
+						{{ form.description }}
+		    </p>
+            <input type="hidden" name="id" value="{{video.id}}"/>
+        <div class="text-center">
+          <h3>Select Dependencies</h3>
+        </div>
+        <hr>
+				<table class="table">
+					<thead class="table">
+						<tr class="table-primary align-middle">
+							<th class="col-6">Selected</th>
+              <th class="col.6">
+                <p class="w-100">
+                    Search:
+                  </p>
+                  <div class="col-12 input-group mb-3">
+								<input  class="col-7 form-control"  id="searchInput" type="search">
+								<input  class="col-3 btn btn-outline-success btn-sm"  id="searchBtn" type="button" value="Search">
+                  <div>
+							</th>
+						</tr>
+					</thead>
+					<tbody class="col-12">
+						<tr>
+							<td  clss="col-6">
+								<div id="selectCont" class="content col-6 border-start border-dark border-2">
+									{% for dependency in dependencies %}
+									<div class='drag' draggable='true' data-id="dependency.id">
+										{{dependency.title}}
+										<input  type='hidden' name='dependency' value = "{{dependency.id}}"></input>
+									</div>
+									{% endfor %}
+								</div>
+							</td>
+							<td  clss="col-6">
+								<div id="searchCont" class="content col-6 border-start border-dark border-2"></div>
+							</td>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+          <div class="row col-12">
+          <button class="align-items-center btn btn-outline-primary" type="submit">Upload</button>
+          </div>
+		</form>
+    </div>
+  </div>
+</section>
+<script type="text/javascript" src="{% static '/js/upload.js'  %}"></script>
+{% endblock %}

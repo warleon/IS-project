@@ -1,41 +1,34 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<head>
-	<h1>Videos:<br>
+
+<section class="pt-2 pt-xl-3 pb-2 ">
+	<div class="container" data-sticky-container>
+		<h1>Canal de {{ usuario }}:<br>
 		
-	</h1>
-</head>
-<section>
-{% if documents %}
-		<ul>
-		{% for document in documents %}
+		</h1>
+{% if documents %}	
 		<div class="row">
+		{% for document in documents %}
 			<!--Grid column-->
-			<div class="col-md-9 mb-4">
-				<div class="row">
-					<div class="col-md-4 mb-4">
-						<header>
+				<div class="col-3 card m-2">
+						<div class="card-header border-bottom">
 							<h2>
-							<li><a href="/show?id={{ document.id }}">{{ document.title }}</a></li><br>
+								<a href="/show?id={{ document.id }}">{{ document.title }}</a><br>
 							</h2>
-						</header>
-					  <div class="bg-image hover-overlay shadow-1-strong rounded ripple" data-mdb-ripple-color="light">
-						<img src="https://mdbootstrap.com/img/new/standard/nature/184.jpg" class="img-fluid" />
-						  <div class="mask" style="background-color: rgba(251, 251, 251, 0.15);"></div>
-						</a>
-					  </div>
-					</div>
-				  </div>
-			</div>
-		</div>
+						</div>
+					  	<div class="card-body bg-image hover-overlay shadow-1-strong rounded ripple" data-mdb-ripple-color="light">
+                            <img src="media/{{document.thumbnail}}" class="img-fluid" />
+						<div class="mask" style="background-color: rgba(251, 251, 251, 0.15);"></div>
+						</div>
+				</div>
 		{% endfor %}
-		</ul>
+		</div>
 {% else %}
 		<p>No videos to show :(</p>
 
 	
 {% endif %}
-
+	</div>
 </section>
 {% endblock %}

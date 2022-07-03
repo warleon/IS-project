@@ -7,6 +7,7 @@ import os
 
 from django.contrib.auth import logout
 from django.db.utils import IntegrityError
+from django.forms.models import model_to_dict
 
 import subprocess
 
@@ -19,7 +20,8 @@ logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 
 def index(request):
-    return render(request,'index.html')
+    documents = Video.objects.all()
+    return render(request,'index.html',{'documents': documents})
 
 def login(request):
     if request.method == 'POST':
@@ -71,8 +73,49 @@ def show_video(request):
     vidid = request.GET.get('id')
     
     video = Video.objects.get(pk=vidid)
-
+    
     return render(request, 'showVideo.html',{"url":settings.MEDIA_URL+video.docfile.name, "video": video})
+
+def update_video(request):
+    if request.method == 'GET':
+        namevid = int(request.GET.get('id'))
+        help = Video.objects.get(pk = namevid)
+        dependencies = Related.objects.filter(video_01_id = namevid)
+        videos=[]
+        for relation in dependencies:
+            video =Video.objects.get(pk=relation.video_02_id)
+            json = model_to_dict(video)
+            del json["docfile"]
+            del json["thumbnail"]
+            json["author"] = model_to_dict(video.author)
+            videos.append(json)
+        form = DocumentForm() # A empty, unbound form
+        return render(request, 'update.html',{"form":form, "video" : help, "dependencies":videos})
+    elif request.method == 'POST':
+        title = request.POST['title']
+        description = request.POST['description']
+        #form = DocumentForm(request.POST)
+        namevid = int(request.POST.get('id'))
+        help = Video.objects.get(pk = namevid)
+        dependencies = request.POST.getlist("dependency")
+        help.title = title
+        help.description = description
+        help.save()
+        for dependency in dependencies:
+            try:
+                id = int(dependency)
+                logger.info("Found dependency id: %s", id)
+                video_2 = Video.objects.get(pk=id)
+                relation = Related(video_01 = help, video_02 = video_2)
+                relation.save()
+            except ValueError as e:
+                logger.error(e)
+            except Video.DoesNotExist as e:
+                logger.error(e)
+            except IntegrityError as e:
+                logger.error(e)
+        return render(request, 'showVideo.html',{"url":settings.MEDIA_URL+help.docfile.name, "video": help})
+
 
 def upload(request):
     # Handle file upload
@@ -89,9 +132,12 @@ def upload(request):
                 doc_rel_path = newdoc.docfile.name
                 doc_name = os.path.basename(doc_rel_path)
                 doc_abs_path =os.path.join(settings.MEDIA_ROOT , doc_rel_path)
+                thumbnail_command = "ffmpeg -i {0} -ss 00:00:00.000 -vframes 1 {0}.png".format(doc_abs_path)
                 command = "ffmpeg -i {0} -f segment -segment_time 5.0 -segment_list {0}.m3u8 -vcodec copy {0}_%d.ts".format(doc_abs_path)
                 subprocess.run(command,shell=True, check=True)
+                subprocess.run(thumbnail_command,shell=True, check=True)
                 newdoc.docfile.name = doc_rel_path+".m3u8"
+                newdoc.thumbnail.name = doc_rel_path+".png"
                 newdoc.save()
                 # Create dependencies
                 for dependency in dependencies:
@@ -131,8 +177,13 @@ def prueba(request):
     return render(request,'prueba.html')
 
 def dashboard(request):
-    videos = Video.objects.filter(author = request.user)
-    return render(request,'dashboard.html',{'documents': videos})
+
+    userid = int(request.GET.get('id'))
+    usuario = User.objects.get(pk = userid)  
+    videos = Video.objects.filter(author = usuario)
+
+    return render(request,'dashboard.html',{'usuario':usuario , 'documents': videos})
+
 
 def deletevideo(request,id):
     video = get_object_or_404(Video,id=id)

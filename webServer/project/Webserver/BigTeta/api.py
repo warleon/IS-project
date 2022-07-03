@@ -26,9 +26,9 @@ def get_dependecies_from_video_id(request):
       video =Video.objects.get(pk=relation.video_02_id)
       json = model_to_dict(video)
       del json["docfile"]
-      json["author"] = video.author.username
+      del json["thumbnail"]
+      json["author"] = model_to_dict(video.author)
       videos.append(json)
-    logger.info(videos)
     return JsonResponse(videos, safe=False)
   except ValueError as e:
     logger.error(e)
